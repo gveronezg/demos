@@ -1,222 +1,1325 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AutoRays | Mobile Mechanic, North Dublin</title>
-<meta name="description" content="Mobile mechanics across North Dublin. We come to you, repair on the spot and tow to our workshop at no extra cost. Free pre-NCT check.">
-<meta property="og:title" content="AutoRays | Mobile Mechanic, North Dublin">
-<meta property="og:description" content="We come to you. Mobile repairs, servicing and a free pre-NCT check in North Dublin.">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#15130f">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"AutoRays Garage & Mobile Mechanics","address":{"@type":"PostalAddress","streetAddress":"9 Norton’s Avenue, Phibsborough","addressLocality":"Dublin","postalCode":"D07 XW88","addressCountry":"IE"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"10:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"14:00"}]}</script>
-<style>
-:root{--bg:#faf8f3;--surface:#fff;--text:#1a1917;--muted:#5a5852;--accent:#c2410c;--on-accent:#fff;--line:#e6e1d6;--soft:#f1ece0;--ink:#15130f;--ink-text:#f5f1e8;--ink-muted:#b7b2a4;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#12110e;--surface:#1c1a16;--text:#f3efe6;--muted:#a9a598;--accent:#ff8a4c;--on-accent:#15130f;--line:#332f28;--soft:#1a1814;--ink:#0b0a08}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#12110e;--surface:#1c1a16;--text:#f3efe6;--muted:#a9a598;--accent:#ff8a4c;--on-accent:#15130f;--line:#332f28;--soft:#1a1814;--ink:#0b0a08}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:clip;-webkit-text-size-adjust:100%}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
-img,svg{max-width:100%}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-.beta{background:var(--ink);color:var(--ink-text);font-size:12.5px;text-align:center;padding:7px 12px;letter-spacing:.2px}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
-header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
-.logo{font-weight:900;font-size:19px;letter-spacing:-.4px;text-decoration:none}
-.logo span{color:var(--accent)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--accent);color:var(--on-accent);padding:15px 26px;border-radius:12px;font-weight:800;font-size:16px;text-decoration:none;border:2px solid var(--accent);box-shadow:0 6px 18px -8px var(--accent);transition:transform .15s ease,box-shadow .15s ease}
-.btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -10px var(--accent)}
-.btn.sm{padding:10px 18px;font-size:15px;box-shadow:none}
-.btn.ghost{background:transparent;color:inherit;border-color:currentColor;box-shadow:none;opacity:.92}
-.btn svg{width:20px;height:20px;flex:none}
-.hero{background:var(--ink);color:var(--ink-text);background-image:radial-gradient(900px 420px at 85% -10%,rgba(255,138,76,.22),transparent 60%)}
-.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:64px}
-.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#ff8a4c;margin-bottom:14px}
-h1{font-size:clamp(34px,6.4vw,60px);line-height:1.04;letter-spacing:-1.6px;margin:0 0 18px;font-weight:900}
-h1 em{font-style:normal;color:#ff8a4c}
-.hero p.lead{font-size:clamp(17px,2.4vw,20px);color:var(--ink-muted);margin:0 0 28px;max-width:32em}
-.cta{display:flex;gap:12px;flex-wrap:wrap}
-.hero .btn{background:#ff8a4c;border-color:#ff8a4c;color:#15130f}
-.hero .btn.ghost{background:transparent;color:var(--ink-text);border-color:#4a463c}
-.arch{border-radius:999px 999px 22px 22px;padding:64px 28px 30px;text-align:center;border:1px solid #3a362d;background:linear-gradient(180deg,#221f19,#17150f);background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 24px);max-width:340px;margin-left:auto;width:100%}
-.arch .big{font-size:64px;font-weight:900;line-height:1;letter-spacing:-2px;color:#ff8a4c}
-.arch .stars{letter-spacing:4px;color:#ffc46b;font-size:20px;margin:8px 0 4px}
-.arch p{margin:0;color:var(--ink-muted);font-size:15px}
-.arch hr{border:0;border-top:1px solid #3a362d;margin:20px 0}
-.arch b{display:block;color:var(--ink-text);font-size:17px}
-.trust{border-bottom:1px solid var(--line);background:var(--soft)}
-.trust ul{list-style:none;margin:0;padding:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 18px;font-weight:600;font-size:15px}
-.trust li{display:flex;align-items:center;gap:10px}
-.trust svg{width:20px;height:20px;color:var(--accent);flex:none}
-section{padding:68px 0}
-.kicker{font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
-h2{font-size:clamp(26px,4.4vw,38px);line-height:1.12;letter-spacing:-1px;margin:0 0 14px;font-weight:900}
-.sub{color:var(--muted);max-width:36em;margin:0 0 34px;font-size:17px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .2s ease,border-color .2s ease}
-.card:hover{transform:translateY(-4px);border-color:var(--accent)}
-.card h3{margin:14px 0 6px;font-size:19px;letter-spacing:-.3px}
-.card p{margin:0;color:var(--muted);font-size:15.5px}
-.ico{width:46px;height:46px;border-radius:12px;background:var(--soft);color:var(--accent);display:grid;place-items:center}
-.ico svg{width:24px;height:24px}
-.steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.step{position:relative;padding:26px 26px 26px 26px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
-.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:900;margin-bottom:12px}
-.step h3{margin:0 0 4px;font-size:18px}
-.step p{margin:0;color:var(--muted);font-size:15.5px}
-.alt{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.note{font-size:13.5px;color:var(--muted);margin-top:18px}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:stretch}
-table{border-collapse:collapse;width:100%}
-td{padding:12px 0;border-bottom:1px solid var(--line)}
-td:last-child{text-align:right;font-weight:700}
-tr:last-child td{border-bottom:0}
-details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 20px;margin-bottom:10px}
-summary{cursor:pointer;font-weight:700;padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:16px}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--accent);font-size:24px;line-height:1}
-details[open] summary::after{content:"–"}
-details p{margin:0 0 18px;color:var(--muted)}
-.final{background:var(--ink);color:var(--ink-text);text-align:center;background-image:radial-gradient(700px 320px at 50% 120%,rgba(255,138,76,.25),transparent 65%)}
-.final p{color:var(--ink-muted);margin:0 auto 28px;max-width:30em;font-size:18px}
-.final .btn{background:#ff8a4c;border-color:#ff8a4c;color:#15130f}
-footer{padding:28px 0;color:var(--muted);font-size:14px}
-.bar{display:none}
-.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
-.js .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-@media (max-width:820px){
-.hero .wrap{grid-template-columns:1fr;padding-top:40px;padding-bottom:48px;gap:34px}
-.arch{margin:0 auto;padding-top:56px}
-section{padding:52px 0}
-.cta .btn{width:100%}
-header .btn{display:none}
-body{padding-bottom:84px}
-.bar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bg);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
-.bar .btn{width:100%}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Expert Automotive | Car Mechanic &amp; Diagnostics in Dorset St, Dublin 1</title>
+    <meta name="description"
+        content="Expert Automotive on Dorset Street Lower, Dublin 1 (Phibsborough). Full car servicing, diagnostic scanning, brakes, clutches, suspension and pre-NCT checks. Call 087 711 3822.">
+    <meta property="og:title" content="Expert Automotive | Car Servicing &amp; Repairs Dublin">
+    <meta property="og:description"
+        content="Professional car mechanic &amp; diagnostics on Dorset Street Lower, Phibsborough, Dublin 1. Upfront pricing, 4.7★ rated.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0b1120">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "Expert Automotive",
+  "telephone": "+353834370595",
+  "url": "https://www.google.com/maps/place/Expert+Automotive/@53.3614384,-6.2601136,17z/data=!3m1!4b1!4m6!3m5!1s0x48670e7c9932842d:0xd8cdb1cee9940f33!8m2!3d53.3614384!4d-6.2601136!16s%2Fg%2F1pp2wyzcr",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "59B Dorset Street Lower, Phibsborough",
+    "addressLocality": "Dublin",
+    "postalCode": "D01 C5R3",
+    "addressRegion": "Dublin",
+    "addressCountry": "IE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 53.3614384,
+    "longitude": -6.2601136
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "08:00",
+      "closes": "13:00"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "195"
+  }
 }
-</style>
-</head>
-<body>
-<div class="beta">Beta preview, draft design prepared for AutoRays</div>
-<header><div class="wrap">
-<a class="logo" href="#top">Auto<span>Rays</span></a>
-<a class="btn sm" data-wa href="https://wa.me/353834370595">WhatsApp us</a>
-</div></header>
-
-<main id="top">
-<div class="hero"><div class="wrap">
-<div>
-<span class="eyebrow">Mobile mechanic · North Dublin</span>
-<h1>We come to <em>you.</em> Repairs on the spot.</h1>
-<p class="lead">Three fully equipped mobile units across North Dublin. If we can’t fix it on site, we tow it to our workshop at no extra cost.</p>
-<div class="cta">
-<a class="btn" data-wa href="https://wa.me/353834370595"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.3L3 20l1.3-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>Get a quote on WhatsApp</a>
-<a class="btn ghost" href="#find-us">Find us</a>
-</div>
-</div>
-<div class="arch" aria-label="Google rating 4.7 out of 5 from 401 reviews">
-<div class="big">4.7</div>
-<div class="stars" aria-hidden="true">★★★★★</div>
-<p>on Google, from 401 reviews</p>
-<hr>
-<b>Free pre-NCT check</b>
-<p>With a written report before your test</p>
-</div>
-</div></div>
-
-<div class="trust"><div class="wrap"><ul>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg>4.7★ on Google</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free pre-NCT check</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h2l2-5h10l2 5h2"/><circle cx="7" cy="16" r="2"/><circle cx="17" cy="16" r="2"/></svg>Free tow to workshop</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>Phibsborough, Dublin 7</li>
-</ul></div></div>
-
-<section><div class="wrap">
-<p class="kicker rv">What we do</p>
-<h2 class="rv">Servicing, repairs and diagnostics</h2>
-<p class="sub rv">Most jobs done on site, wherever your car is.</p>
-<div class="grid">
-<div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.5 2.5-2.4-.6-.6-2.4Z"/></svg></div><h3>Mobile breakdown repairs</h3><p>Fully equipped units come to you, at home, at work or by the roadside.</p></div>
-<div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Servicing &amp; oil changes</h3><p>Servicing, tune-ups and oil changes to keep your car reliable.</p></div>
-<div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></svg></div><h3>Diagnostics &amp; emissions</h3><p>Complete computer diagnostics and emissions checks to find the fault fast.</p></div>
-<div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Brakes, steering &amp; suspension</h3><p>Brake repair specialists, plus steering, suspension and headlight alignment.</p></div>
-</div>
-</div></section>
-
-<section class="alt"><div class="wrap">
-<p class="kicker rv">How it works</p>
-<h2 class="rv">Three steps to a sorted car</h2>
-<p class="sub rv">No forms, no phone queue. Just message us.</p>
-<div class="steps">
-<div class="step rv"><h3>Message us</h3><p>Tell us your car’s make, model and what’s wrong, on WhatsApp.</p></div>
-<div class="step rv"><h3>Get a quote</h3><p>We come back with a clear price before any work starts.</p></div>
-<div class="step rv"><h3>We come to you</h3><p>We repair on site, or tow it to our workshop at no extra cost.</p></div>
-</div>
-</div></section>
-
-<section><div class="wrap">
-<p class="kicker rv">Why locals choose us</p>
-<h2 class="rv">What customers mention on Google</h2>
-<p class="sub rv">Recurring themes from our 401 Google reviews.</p>
-<div class="grid">
-<div class="card rv"><h3>Honest service</h3><p>Customers describe the work as efficient and honest, with clear communication.</p></div>
-<div class="card rv"><h3>Quick turnarounds</h3><p>Reviewers mention fast repairs, some finished the same afternoon a car broke down.</p></div>
-<div class="card rv"><h3>Roadside support</h3><p>Helpful when a breakdown happens, including help coordinating towing and parts.</p></div>
-</div>
-<p class="note rv">Summary of review themes. Individual customer reviews to be added.</p>
-</div></section>
-
-<section class="alt" id="find-us"><div class="wrap">
-<p class="kicker rv">Visit us</p>
-<h2 class="rv">Find our workshop</h2>
-<div class="two" style="margin-top:28px">
-<div class="card rv"><h3 style="margin-top:0">Opening hours</h3>
-<table><tr><td>Monday to Friday</td><td>10:00 – 18:00</td></tr><tr><td>Saturday</td><td>10:00 – 14:00</td></tr><tr><td>Sunday</td><td>Closed</td></tr></table>
-<p style="margin:14px 0 0;color:var(--muted);font-size:14px">After-hours help available if required.</p></div>
-<div class="card rv"><h3 style="margin-top:0">Address</h3>
-<p style="margin-bottom:18px">9 Norton’s Avenue, Phibsborough,<br>Dublin 7, D07 XW88</p>
-<a class="btn sm" href="https://maps.google.com/maps?cid=16445631667432943032">Open in Google Maps</a></div>
-</div>
-</div></section>
-
-<section><div class="wrap" style="max-width:760px">
-<p class="kicker rv">Questions</p>
-<h2 class="rv">Quick answers</h2>
-<div style="margin-top:26px">
-<details class="rv"><summary>Do you come to me?</summary><p>Yes. Our mobile units repair your car wherever it is. If it can’t be fixed on site, we tow it to our workshop at no extra cost.</p></details>
-<details class="rv"><summary>Is the pre-NCT check really free?</summary><p>Yes, we offer free pre-NCT testing with a report.</p></details>
-<details class="rv"><summary>How do I get a quote?</summary><p>Send us a WhatsApp message with your car’s make, model and the problem, and we’ll come back to you.</p></details>
-<details class="rv"><summary>Where is your workshop?</summary><p>9 Norton’s Avenue, Phibsborough, Dublin 7.</p></details>
-</div>
-</div></section>
-
-<div class="final"><div class="wrap" style="padding-top:68px;padding-bottom:72px">
-<h2 class="rv">Car making a noise? Warning light on?</h2>
-<p class="rv">Message us and we’ll come to you with a clear price.</p>
-<a class="btn" data-wa href="https://wa.me/353834370595">Message us on WhatsApp</a>
-</div></div>
-</main>
-
-<footer><div class="wrap">© AutoRays Garage &amp; Mobile Mechanics, 9 Norton’s Avenue, Phibsborough, Dublin 7. Beta preview, details to be confirmed with the owner.</div></footer>
-
-<div class="bar"><a class="btn" data-wa href="https://wa.me/353834370595">Get a quote on WhatsApp</a></div>
-
-<script>
-(function(){
-var t="Hi! I saw the website you made for AutoRays and I’d like to know more about prices and how to get started.";
-var l=document.querySelectorAll("[data-wa]");
-for(var i=0;i<l.length;i++){l[i].href="https://wa.me/353834370595?text="+encodeURIComponent(t)}
-if("IntersectionObserver" in window&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-document.documentElement.classList.add("js");
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1});
-document.querySelectorAll(".rv").forEach(function(n){io.observe(n)});
-}
-})();
 </script>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-alt: #f1f5f9;
+            --text: #0f172a;
+            --muted: #475569;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --accent-cyan: #0284c7;
+            --on-accent: #ffffff;
+            --line: #e2e8f0;
+            --line-strong: #cbd5e1;
+            --ink: #0b1120;
+            --ink-surface: #131c31;
+            --ink-border: #1e293b;
+            --ink-text: #f8fafc;
+            --ink-muted: #94a3b8;
+            --gold: #f59e0b;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                color-scheme: dark;
+                --bg: #0b1120;
+                --surface: #111a2e;
+                --surface-alt: #16223b;
+                --text: #f1f5f9;
+                --muted: #94a3b8;
+                --accent: #38bdf8;
+                --accent-hover: #60a5fa;
+                --accent-light: rgba(56, 189, 248, 0.12);
+                --accent-cyan: #38bdf8;
+                --on-accent: #0b1120;
+                --line: #1e293b;
+                --line-strong: #334155;
+                --ink: #070a14;
+                --ink-surface: #0e1526;
+                --ink-border: #1e293b;
+                --ink-text: #f8fafc;
+                --ink-muted: #94a3b8;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #0b1120;
+            --surface: #111a2e;
+            --surface-alt: #16223b;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #60a5fa;
+            --accent-light: rgba(56, 189, 248, 0.12);
+            --accent-cyan: #38bdf8;
+            --on-accent: #0b1120;
+            --line: #1e293b;
+            --line-strong: #334155;
+            --ink: #070a14;
+            --ink-surface: #0e1526;
+            --ink-border: #1e293b;
+            --ink-text: #f8fafc;
+            --ink-muted: #94a3b8;
+        }
+
+        html {
+            scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 76px);
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: clip;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0 0 auto;
+            height: env(safe-area-inset-top, 0px);
+            z-index: 30;
+            background: var(--bg);
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Top notification pill */
+        .top-notice {
+            background: linear-gradient(90deg, #1e3a8a, #0284c7);
+            color: #f0fdf4;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px 14px;
+            letter-spacing: .2px;
+        }
+
+        .top-notice a {
+            color: #fff;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            margin-left: 6px;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            header {
+                background: rgba(11, 17, 32, 0.92);
+            }
+        }
+
+        :root[data-theme="dark"] header {
+            background: rgba(11, 17, 32, 0.92);
+        }
+
+        header .wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 68px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-cyan));
+            color: #fff;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent);
+            color: var(--on-accent);
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+            transition: all .18s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1.5px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.36);
+        }
+
+        .btn.sm {
+            padding: 9px 16px;
+            font-size: 14px;
+            box-shadow: none;
+        }
+
+        .btn.outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--line-strong);
+            box-shadow: none;
+        }
+
+        .btn.outline:hover {
+            background: var(--surface-alt);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn.whatsapp {
+            background: #25d366;
+            color: #0b2e13;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28);
+        }
+
+        .btn.whatsapp:hover {
+            background: #20ba5a;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            flex: none;
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            background: var(--ink);
+            color: var(--ink-text);
+            background-image:
+                radial-gradient(800px 420px at 80% -10%, rgba(37, 99, 235, 0.32), transparent 70%),
+                radial-gradient(600px 350px at 10% 110%, rgba(2, 132, 199, 0.22), transparent 65%);
+            border-bottom: 1px solid var(--ink-border);
+            overflow: hidden;
+        }
+
+        .hero .wrap {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 48px;
+            align-items: center;
+            padding-top: 60px;
+            padding-bottom: 68px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+        }
+
+        h1 {
+            font-size: clamp(34px, 5.4vw, 56px);
+            line-height: 1.08;
+            letter-spacing: -1.4px;
+            margin: 0 0 18px;
+            font-weight: 900;
+        }
+
+        h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, #60a5fa, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p.lead {
+            font-size: clamp(16.5px, 2.2vw, 19px);
+            color: var(--ink-muted);
+            margin: 0 0 30px;
+            max-width: 32em;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero .btn.primary {
+            background: #38bdf8;
+            color: #0b1120;
+            border-color: #38bdf8;
+            box-shadow: 0 4px 18px rgba(56, 189, 248, 0.35);
+        }
+
+        .hero .btn.primary:hover {
+            background: #7dd3fc;
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.45);
+        }
+
+        .hero .btn.ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--ink-text);
+            border: 1px solid var(--ink-border);
+            box-shadow: none;
+        }
+
+        .hero .btn.ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #38bdf8;
+        }
+
+        /* Rating Card in Hero */
+        .rating-card {
+            background: linear-gradient(180deg, #131c31, #0c1424);
+            border: 1px solid var(--ink-border);
+            border-radius: 24px;
+            padding: 40px 32px 32px;
+            text-align: center;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            max-width: 360px;
+            margin-left: auto;
+            width: 100%;
+        }
+
+        .rating-score {
+            font-size: 68px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -2px;
+            color: #38bdf8;
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 22px;
+            letter-spacing: 4px;
+            margin: 8px 0 6px;
+        }
+
+        .rating-label {
+            font-size: 15px;
+            color: var(--ink-muted);
+            margin: 0;
+        }
+
+        .rating-divider {
+            border: 0;
+            border-top: 1px solid var(--ink-border);
+            margin: 24px 0 20px;
+        }
+
+        .rating-highlight {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink-text);
+            margin-bottom: 4px;
+        }
+
+        .rating-sub {
+            font-size: 14px;
+            color: var(--ink-muted);
+            margin: 0;
+        }
+
+        /* Trust Bar */
+        .trust-bar {
+            border-bottom: 1px solid var(--line);
+            background: var(--surface);
+        }
+
+        .trust-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 18px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px 20px;
+            font-weight: 600;
+            font-size: 14.5px;
+        }
+
+        .trust-bar li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trust-bar svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+            flex: none;
+        }
+
+        /* Sections common */
+        section {
+            padding: 76px 0;
+        }
+
+        .kicker {
+            font-size: 12.5px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0 0 10px;
+        }
+
+        h2 {
+            font-size: clamp(28px, 4.2vw, 40px);
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin: 0 0 14px;
+            font-weight: 900;
+        }
+
+        .sub {
+            color: var(--muted);
+            max-width: 38em;
+            margin: 0 0 40px;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 28px -10px rgba(37, 99, 235, 0.16);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            letter-spacing: -0.3px;
+            font-weight: 800;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Alt Section (How it works & steps) */
+        .alt {
+            background: var(--surface-alt);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .steps {
+            counter-reset: step-num;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 30px 26px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .step::before {
+            counter-increment: step-num;
+            content: "0" counter(step-num);
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .step h3 {
+            margin: 0 0 8px;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        /* Two columns details (Hours & Location) */
+        .two-cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        table.hours-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        table.hours-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 15px;
+        }
+
+        table.hours-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+        }
+
+        table.hours-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .location-address {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text);
+            margin: 14px 0 22px;
+        }
+
+        .location-pill {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        /* Reviews highlights */
+        .review-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 26px;
+        }
+
+        .review-stars {
+            color: var(--gold);
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .review-quote {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic;
+            margin: 0 0 14px;
+        }
+
+        .review-author {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        /* FAQ Details */
+        details {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 0 22px;
+            margin-bottom: 12px;
+            transition: border-color .18s ease;
+        }
+
+        details:hover {
+            border-color: var(--accent);
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16.5px;
+            padding: 18px 0;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "+";
+            color: var(--accent);
+            font-size: 24px;
+            line-height: 1;
+            font-weight: 400;
+            transition: transform .2s ease;
+        }
+
+        details[open] summary::after {
+            content: "–";
+        }
+
+        details p {
+            margin: 0 0 20px;
+            color: var(--muted);
+            font-size: 15.5px;
+            line-height: 1.6;
+        }
+
+        /* Final CTA */
+        .final {
+            background: var(--ink);
+            color: var(--ink-text);
+            text-align: center;
+            position: relative;
+            background-image: radial-gradient(750px 360px at 50% 120%, rgba(37, 99, 235, 0.35), transparent 70%);
+            border-top: 1px solid var(--ink-border);
+        }
+
+        .final p {
+            color: var(--ink-muted);
+            margin: 0 auto 32px;
+            max-width: 32em;
+            font-size: 18px;
+        }
+
+        .final .cta-group {
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            padding: 34px 0;
+            color: var(--muted);
+            font-size: 14px;
+            border-top: 1px solid var(--line);
+            background: var(--surface);
+        }
+
+        footer .wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: gap;
+            gap: 16px;
+        }
+
+        /* Mobile Sticky Contact Bar */
+        .bottom-bar {
+            display: none;
+        }
+
+        @media (max-width: 820px) {
+            body {
+                padding-bottom: 84px;
+            }
+
+            .hero .wrap {
+                grid-template-columns: 1fr;
+                padding-top: 40px;
+                padding-bottom: 50px;
+                gap: 36px;
+            }
+
+            .rating-card {
+                margin: 0 auto;
+            }
+
+            section {
+                padding: 56px 0;
+            }
+
+            .nav-actions .btn {
+                display: none;
+            }
+
+            .bottom-bar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 50;
+                background: var(--surface);
+                border-top: 1px solid var(--line);
+                padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+                box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+            }
+
+            .bottom-bar .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+                box-shadow: none;
+            }
+
+            footer .wrap {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Scroll reveal classes */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity .5s ease, transform .5s ease;
+        }
+
+        .js .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-notice">
+        <span>📍 59B Dorset Street Lower, Phibsborough, Dublin 1 — Professional Car Servicing &amp; Diagnostics</span>
+        <a href="#location">Find Us &rarr;</a>
+    </div>
+
+    <header>
+        <div class="wrap">
+            <a class="logo" href="#top" aria-label="Expert Automotive Home">
+                <div class="logo-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.5 2.5-2.4-.6-.6-2.4Z" />
+                    </svg>
+                </div>
+                <div>EXPERT <span>AUTOMOTIVE</span></div>
+            </a>
+            <div class="nav-actions">
+                <a class="btn outline sm" href="tel:+353834370595">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    087 711 3822
+                </a>
+                <a class="btn whatsapp sm" data-wa href="https://wa.me/353834370595">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.3L3 20l1.3-5.4A8.4 8.4 0 1 1 21 11.5Z" />
+                    </svg>
+                    WhatsApp
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+
+        <!-- HERO -->
+        <div class="hero">
+            <div class="wrap">
+                <div>
+                    <div class="badge">
+                        <span class="badge-dot"></span>
+                        Workshop Open · Phibsborough, Dublin 1
+                    </div>
+                    <h1>Reliable Car Servicing &amp; <em>Expert</em> Diagnostics</h1>
+                    <p class="lead">Complete mechanical repairs, brake overhauls, engine diagnostics and pre-NCT checks
+                        on Dorset Street Lower. Honest service, transparent quotes, and quick turnaround.</p>
+                    <div class="cta-group">
+                        <a class="btn primary" data-wa href="https://wa.me/353834370595">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.3L3 20l1.3-5.4A8.4 8.4 0 1 1 21 11.5Z" />
+                            </svg>
+                            Get a Quote on WhatsApp
+                        </a>
+                        <a class="btn ghost" href="tel:+353834370595">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                            Call 087 711 3822
+                        </a>
+                    </div>
+                </div>
+
+                <div class="rating-card" aria-label="Google rating 4.7 out of 5 from over 190 reviews">
+                    <div class="rating-score">4.7</div>
+                    <div class="stars" aria-hidden="true">★★★★★</div>
+                    <p class="rating-label">Google Verified Rating · 190+ Reviews</p>
+                    <hr class="rating-divider">
+                    <div class="rating-highlight">Pre-NCT Check &amp; Diagnostics</div>
+                    <p class="rating-sub">Electronic scan &amp; full mechanical inspection</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRUST BAR -->
+        <div class="trust-bar">
+            <div class="wrap">
+                <ul>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z" />
+                        </svg>
+                        4.7★ Rated on Google
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" />
+                            <circle cx="12" cy="10" r="2.5" />
+                        </svg>
+                        59B Dorset St Lower, Dublin 1
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Pre-NCT Inspections
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Fast Turnarounds
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SERVICES -->
+        <section>
+            <div class="wrap">
+                <p class="kicker reveal">Our Services</p>
+                <h2 class="reveal">Complete Garage Services &amp; Repairs</h2>
+                <p class="sub reveal">From routine oil service to engine electronics, our experienced technicians keep
+                    your vehicle performing safely and smoothly.</p>
+
+                <div class="grid">
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M13 2 4 14h7l-1 8 9-12h-7Z" />
+                            </svg>
+                        </div>
+                        <h3>Computer Diagnostics</h3>
+                        <p>Advanced OBD fault scanning to pinpoint check engine lights, ABS, airbag warnings, and sensor
+                            malfunctions accurately.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z" />
+                                <path d="m9 12 2 2 4-4" />
+                            </svg>
+                        </div>
+                        <h3>Full &amp; Interim Servicing</h3>
+                        <p>Manufacturer-spec oil and filter changes, spark plugs, fluid top-ups, and multi-point safety
+                            inspections for all makes.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+                        <h3>Brakes &amp; Suspension</h3>
+                        <p>Brake pad and disc replacements, shock absorbers, track rod ends, wishbones, and suspension
+                            repairs for crisp handling.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path
+                                    d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.5 2.5-2.4-.6-.6-2.4Z" />
+                            </svg>
+                        </div>
+                        <h3>Clutches &amp; Transmission</h3>
+                        <p>Clutch replacements, flywheel checks, gear selection repairs, and transmission diagnostics to
+                            restore seamless drive.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path
+                                    d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83" />
+                            </svg>
+                        </div>
+                        <h3>Timing Belts &amp; Cooling</h3>
+                        <p>Timing belt and water pump replacements, radiator repairs, thermostat replacements, and
+                            coolant flushes to prevent overheating.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M9 11l3 3L22 4" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                            </svg>
+                        </div>
+                        <h3>Pre-NCT Check &amp; Emissions</h3>
+                        <p>Thorough test inspection covering emissions, lights, brakes, suspension, and chassis before
+                            your National Car Test.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="alt">
+            <div class="wrap">
+                <p class="kicker reveal">Simple Process</p>
+                <h2 class="reveal">How We Get Your Car Sorted</h2>
+                <p class="sub reveal">No waiting around or unexpected fees. We provide honest estimates before starting
+                    any work.</p>
+
+                <div class="steps">
+                    <div class="step reveal">
+                        <h3>Contact Us</h3>
+                        <p>Give us a call or drop us a WhatsApp with your car make, model, registration, and the issue
+                            or service required.</p>
+                    </div>
+                    <div class="step reveal">
+                        <h3>Clear Estimate</h3>
+                        <p>We assess the requirements and give you a transparent price estimate before any parts or work
+                            are ordered.</p>
+                    </div>
+                    <div class="step reveal">
+                        <h3>Expert Repair &amp; Handover</h3>
+                        <p>Drop off at our Dorset Street workshop. We carry out precision repairs and notify you as soon
+                            as your car is ready.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section>
+            <div class="wrap">
+                <p class="kicker reveal">Customer Feedback</p>
+                <h2 class="reveal">Trusted by Dublin Drivers</h2>
+                <p class="sub reveal">Real experiences from our customers on Google Reviews.</p>
+
+                <div class="grid">
+                    <div class="review-card reveal">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-quote">"Sorted out my suspension and track rod ends very quickly. Excellent
+                            communication, honest price, and the car drives like new again. Highly recommended!"</p>
+                        <div class="review-author">— Dublin 1 Customer · Google Review</div>
+                    </div>
+
+                    <div class="review-card reveal">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-quote">"Brought my car in for a full service and pre-NCT check. Very
+                            professional mechanics who explain everything clearly and don't try to upsell unnecessary
+                            work."</p>
+                        <div class="review-author">— Local Resident, Phibsborough · Google Review</div>
+                    </div>
+
+                    <div class="review-card reveal">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-quote">"My check engine light came on on my way to work. They ran diagnostics
+                            promptly, explained the sensor issue, and got it resolved the same day. Great service."</p>
+                        <div class="review-author">— North Dublin Commuter · Google Review</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOCATION & HOURS -->
+        <section class="alt" id="location">
+            <div class="wrap">
+                <p class="kicker reveal">Location &amp; Times</p>
+                <h2 class="reveal">Find Our Dorset Street Workshop</h2>
+                <p class="sub reveal">Conveniently located on Dorset Street Lower, easily accessible from Dublin City
+                    Centre, Phibsborough, and Drumcondra.</p>
+
+                <div class="two-cols" style="margin-top: 24px;">
+                    <div class="card reveal">
+                        <span class="location-pill">Central Dublin Location</span>
+                        <h3 style="margin-top: 6px;">Workshop Address</h3>
+                        <div class="location-address">
+                            <strong>Expert Automotive</strong><br>
+                            59B Dorset Street Lower<br>
+                            Phibsborough, Dublin 1<br>
+                            D01 C5R3, Ireland
+                        </div>
+                        <div class="cta-group">
+                            <a class="btn primary sm"
+                                href="https://www.google.com/maps/place/Expert+Automotive/@53.3614384,-6.2601136,17z/data=!3m1!4b1!4m6!3m5!1s0x48670e7c9932842d:0xd8cdb1cee9940f33!8m2!3d53.3614384!4d-6.2601136!16s%2Fg%2F1pp2wyzcr"
+                                target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" />
+                                    <circle cx="12" cy="10" r="2.5" />
+                                </svg>
+                                Open in Google Maps
+                            </a>
+                            <a class="btn outline sm" href="tel:+353834370595">Call 087 711 3822</a>
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <span class="location-pill">Working Hours</span>
+                        <h3 style="margin-top: 6px;">Opening Times</h3>
+                        <table class="hours-table">
+                            <tr>
+                                <td>Monday – Friday</td>
+                                <td>08:00 – 17:00</td>
+                            </tr>
+                            <tr>
+                                <td>Saturday</td>
+                                <td>08:00 – 13:00</td>
+                            </tr>
+                            <tr>
+                                <td>Sunday</td>
+                                <td>Closed</td>
+                            </tr>
+                        </table>
+                        <p style="margin: 18px 0 0; color: var(--muted); font-size: 14px;">
+                            Early morning drop-offs available by appointment. Contact us in advance to secure your
+                            preferred slot.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section>
+            <div class="wrap" style="max-width: 800px;">
+                <p class="kicker reveal">Common Inquiries</p>
+                <h2 class="reveal">Frequently Asked Questions</h2>
+                <div style="margin-top: 28px;">
+                    <details class="reveal">
+                        <summary>Do I need to book in advance or can I drop in?</summary>
+                        <p>While we accommodate urgent repairs whenever possible, booking in advance ensures we can
+                            allocate a lift and technician immediately for your vehicle.</p>
+                    </details>
+                    <details class="reveal">
+                        <summary>How much does a full service or diagnostic scan cost?</summary>
+                        <p>Pricing varies depending on engine size, oil grade specifications, and required replacement
+                            filters. Contact us with your vehicle registration on WhatsApp or phone for an immediate
+                            exact quote.</p>
+                    </details>
+                    <details class="reveal">
+                        <summary>Can you prepare my car for the NCT?</summary>
+                        <p>Yes. We conduct thorough pre-NCT checks covering headlight alignment, brake efficiency,
+                            suspension wear, exhaust emissions, and safety items so your car passes first time.</p>
+                    </details>
+                    <details class="reveal">
+                        <summary>Where on Dorset Street are you located?</summary>
+                        <p>We are situated at 59B Dorset Street Lower, Phibsborough, Dublin 1 (Eircode: D01 C5R3), close
+                            to the Royal Canal and minutes from central Dublin.</p>
+                    </details>
+                    <details class="reveal">
+                        <summary>How can I get an estimate before coming?</summary>
+                        <p>Simply click our WhatsApp button or call 087 711 3822 with your car's details and symptoms.
+                            We'll give you a clear, honest breakdown.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL BANNER -->
+        <div class="final">
+            <div class="wrap" style="padding-top: 72px; padding-bottom: 76px;">
+                <h2 class="reveal">Car Due a Service or Warning Light On?</h2>
+                <p class="reveal">Speak directly with an experienced mechanic on Dorset Street. Fast quotes, dependable
+                    repairs.</p>
+                <div class="cta-group reveal">
+                    <a class="btn primary" data-wa href="https://wa.me/353834370595">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.3L3 20l1.3-5.4A8.4 8.4 0 1 1 21 11.5Z" />
+                        </svg>
+                        Message Us on WhatsApp
+                    </a>
+                    <a class="btn ghost" href="tel:+353834370595">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        Call 087 711 3822
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div>
+                © Expert Automotive · 59B Dorset Street Lower, Phibsborough, Dublin 1, D01 C5R3.
+            </div>
+            <div>
+                Phone: <a href="tel:+353834370595" style="text-decoration: underline;">087 711 3822</a> · Mon–Fri
+                08:00–17:00, Sat 08:00–13:00
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE STICKY CONTACT BAR -->
+    <div class="bottom-bar">
+        <a class="btn outline" href="tel:+353834370595">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            Call Garage
+        </a>
+        <a class="btn whatsapp" data-wa href="https://wa.me/353834370595">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.3L3 20l1.3-5.4A8.4 8.4 0 1 1 21 11.5Z" />
+            </svg>
+            WhatsApp
+        </a>
+    </div>
+
+    <script>
+        (function () {
+            // Pre-filled WhatsApp message for Expert Automotive
+            var msg = "Hi! I saw the website you made for Expert Automotive and I’d like to know more about prices and how to get starte.";
+            var links = document.querySelectorAll("[data-wa]");
+            for (var i = 0; i < links.length; i++) {
+                links[i].href = "https://wa.me//353834370595?text=" + encodeURIComponent(msg);
+            }
+
+            // Smooth scroll reveals
+            if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                document.documentElement.classList.add("js");
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("in");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.08 });
+
+                document.querySelectorAll(".reveal").forEach(function (el) {
+                    observer.observe(el);
+                });
+            }
+        })();
+    </script>
+
 </body>
+
 </html>
