@@ -1345,29 +1345,107 @@
                     observer.observe(el);
                 });
             }
-            // Rastreamento & Notificações Discord (Opção 2)
+            // Rastreamento & Notificações Avançadas Discord (Opção 2)
             var DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1574014604974096394/u0-nfq2o8vkxh19vzcU-TxnWMRg4PbfaWNVZwtEKUQ4TsvkWLSwXpqp5TQNsEakJu2A6";
 
-            function sendDiscordNotification(title, description, color) {
+            var pageLoadTime = Date.now();
+            var maxScroll = 0;
+            var geoData = null;
+
+            // Monitora rolagem máxima da página
+            window.addEventListener("scroll", function () {
+                var doc = document.documentElement;
+                var total = doc.scrollHeight - doc.clientHeight;
+                if (total > 0) {
+                    var percent = Math.min(100, Math.round((window.scrollY / total) * 100));
+                    if (percent > maxScroll) maxScroll = percent;
+                }
+            }, { passive: true });
+
+            // Coleta dados de IP e Geolocalização em background (gratuito e sem popup de permissão)
+            fetch("https://ipwho.is/")
+                .then(function (res) { return res.json(); })
+                .then(function (data) { if (data && data.success) geoData = data; })
+                .catch(function () {});
+
+            function getDeviceInfo() {
+                var ua = navigator.userAgent;
+                var isMobile = /Android|iPhone|iPad|iPod|webOS|Windows Phone/i.test(ua);
+                var deviceType = isMobile ? "📱 Celular" : "💻 Computador";
+
+                var os = "Desconhecido";
+                if (/iPhone/i.test(ua)) os = "iOS (iPhone)";
+                else if (/iPad/i.test(ua)) os = "iPadOS (iPad)";
+                else if (/Android/i.test(ua)) os = "Android";
+                else if (/Macintosh|Mac OS X/i.test(ua)) os = "macOS";
+                else if (/Windows NT/i.test(ua)) os = "Windows";
+                else if (/Linux/i.test(ua)) os = "Linux";
+
+                var browser = "Navegador Web";
+                if (/WhatsApp/i.test(ua)) browser = "WhatsApp In-App (Link direto)";
+                else if (/Instagram/i.test(ua)) browser = "Instagram In-App";
+                else if (/FBAV|FBAN/i.test(ua)) browser = "Facebook In-App";
+                else if (/Chrome|CriOS/i.test(ua)) browser = "Google Chrome";
+                else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) browser = "Safari";
+                else if (/Firefox/i.test(ua)) browser = "Firefox";
+                else if (/Edg/i.test(ua)) browser = "Microsoft Edge";
+
+                var screenRes = window.screen.width + "x" + window.screen.height;
+                var lang = navigator.language || "Não informado";
+                var theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "Dark" : "Light";
+
+                return {
+                    deviceType: deviceType,
+                    os: os,
+                    browser: browser,
+                    screen: screenRes,
+                    lang: lang,
+                    theme: theme
+                };
+            }
+
+            function sendDiscordNotification(title, description, color, extraFields) {
                 if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.indexOf("discord.com/api/webhooks") === -1) {
                     return;
                 }
 
-                var isMobile = /Android|iPhone|iPad|iPod|webOS|Windows Phone/i.test(navigator.userAgent);
-                var device = isMobile ? "📱 Celular" : "💻 Computador";
-                var referrer = document.referrer ? document.referrer : "Direto / WhatsApp";
+                var dev = getDeviceInfo();
+                var referrer = document.referrer ? document.referrer : "Direto (ou WhatsApp/Chat)";
+                var urlParams = window.location.search || "Nenhum parâmetro";
+                var timeSpent = Math.max(1, Math.round((Date.now() - pageLoadTime) / 1000));
+                var timeFormatted = timeSpent < 60 ? timeSpent + "s" : Math.floor(timeSpent / 60) + "m " + (timeSpent % 60) + "s";
+
+                var locationStr = "Carregando...";
+                if (geoData) {
+                    var flag = geoData.flag && geoData.flag.emoji ? geoData.flag.emoji + " " : "";
+                    locationStr = flag + (geoData.city || "") + ", " + (geoData.country || "") + " (" + (geoData.connection && geoData.connection.isp ? geoData.connection.isp : "IP") + ")";
+                }
+
+                var fields = [
+                    { name: "📍 Localização (IP)", value: locationStr, inline: false },
+                    { name: "📱 Dispositivo & OS", value: dev.deviceType + " · " + dev.os, inline: true },
+                    { name: "🌐 Navegador", value: dev.browser, inline: true },
+                    { name: "⏱️ Tempo no Site", value: timeFormatted, inline: true },
+                    { name: "📜 Rolagem Máxima", value: maxScroll + "% da página", inline: true },
+                    { name: "📐 Tela & Idioma", value: dev.screen + " · " + dev.lang, inline: true },
+                    { name: "🔗 Origem / Referrer", value: referrer, inline: true }
+                ];
+
+                if (window.location.search) {
+                    fields.push({ name: "🏷️ Parâmetros URL", value: urlParams, inline: false });
+                }
+
+                if (extraFields && Array.isArray(extraFields)) {
+                    fields = extraFields.concat(fields);
+                }
 
                 var payload = {
                     embeds: [{
                         title: title,
                         description: description,
-                        color: color || 15105570, // Tom âmbar/laranja da Oh'Rourke's
-                        fields: [
-                            { name: "Dispositivo", value: device, inline: true },
-                            { name: "Origem (Referrer)", value: referrer, inline: true },
-                            { name: "Horário", value: new Date().toLocaleTimeString(), inline: true }
-                        ],
-                        footer: { text: "Oh'Rourke's Demo Tracker" },
+                        color: color || 15105570, // Tom âmbar/laranja Oh'Rourke's
+                        fields: fields,
+                        footer: { text: "Oh'Rourke's Demo Tracker • Dublin 8" },
                         timestamp: new Date().toISOString()
                     }]
                 };
@@ -1377,20 +1455,54 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 }).catch(function (err) {
-                    console.warn("Erro ao enviar notificação:", err);
+                    console.warn("Erro ao enviar webhook:", err);
                 });
             }
 
-            // Notifica o acesso na página (1x por sessão)
+            // Notifica o acesso na página (aguarda 1.2s para ter geolocalização carregada)
             if (!sessionStorage.getItem("visited_notified")) {
                 sessionStorage.setItem("visited_notified", "true");
-                sendDiscordNotification("🚀 Alguém abriu o site Oh'Rourke's!", "Um visitante acabou de carregar a página.");
+                setTimeout(function () {
+                    sendDiscordNotification("🚀 Novo Acesso ao Site Oh'Rourke's!", "Um visitante acabou de carregar a página.", 15105570);
+                }, 1200);
             }
 
-            // Notifica quando o visitante clicar em qualquer botão do WhatsApp
+            // Detecta qual botão de WhatsApp foi clicado
+            function getButtonLocation(el) {
+                if (el.closest("header")) return "Cabeçalho (Topo)";
+                if (el.closest(".hero")) return "Hero Principal (Destaque)";
+                if (el.closest(".bottom-bar")) return "Barra Fixa Inferior (Mobile)";
+                if (el.closest(".final")) return "Seção Final (Rodapé)";
+                return "Botão Geral";
+            }
+
             for (var j = 0; j < links.length; j++) {
-                links[j].addEventListener("click", function () {
-                    sendDiscordNotification("🔥 Clique no Botão do WhatsApp!", "O visitante clicou para iniciar uma conversa no WhatsApp.", 3066993);
+                (function (btn) {
+                    btn.addEventListener("click", function () {
+                        var pos = getButtonLocation(btn);
+                        sendDiscordNotification(
+                            "🔥 Clique no Botão do WhatsApp!",
+                            "O visitante clicou para iniciar conversa no WhatsApp.",
+                            3066993, // Verde WhatsApp
+                            [{ name: "🎯 Botão Clicado", value: pos, inline: true }]
+                        );
+                    });
+                })(links[j]);
+            }
+
+            // Notifica cliques no botão de ligar (tel:)
+            var callButtons = document.querySelectorAll("a[href^='tel:']");
+            for (var k = 0; k < callButtons.length; k++) {
+                callButtons[k].addEventListener("click", function () {
+                    sendDiscordNotification("📞 Clique para Ligar!", "O visitante clicou no número de telefone do café.", 3447003);
+                });
+            }
+
+            // Notifica cliques no botão do Google Maps
+            var mapButtons = document.querySelectorAll("a[href*='maps.google'], a[href*='google.com/maps']");
+            for (var m = 0; m < mapButtons.length; m++) {
+                mapButtons[m].addEventListener("click", function () {
+                    sendDiscordNotification("🗺️ Clique no Google Maps!", "O visitante clicou para ver a localização no mapa.", 15844367);
                 });
             }
         })();
