@@ -383,6 +383,11 @@
             border-radius: 0.6rem;
             transition: all 0.15s ease;
             cursor: pointer;
+            min-height: 2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 0.5rem;
         }
 
         .subpower-chip:hover {
@@ -492,8 +497,8 @@
                     </p>
                 </div>
                 <!-- Abas de Alternância: SuperPoderes vs Local -->
-                <div class="flex items-center gap-1 bg-[#090f1c] p-1 rounded-lg border border-slate-800">
-                    <button id="tab-btn-poderes" onclick="switchOverviewTab('poderes')"
+                <div class="flex items-center gap-1 bg-[#090f1c] p-1 rounded-lg border border-slate-800" role="tablist" aria-label="Visão geral tabs">
+                    <button id="tab-btn-poderes" onclick="switchOverviewTab('poderes')" role="tab" aria-selected="true"
                         class="px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-white bg-blue-600 shadow">
                         ⚡ SuperPoderes
                     </button>
