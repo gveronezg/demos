@@ -405,7 +405,7 @@
 <body>
 
     <div id="toast">✓ Copiado!</div>
-            
+
 
     <!-- ══════════════════════════════════════════════════════
      HEADER
@@ -413,30 +413,30 @@
     <header class="sticky top-0 z-30 shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center gap-3 justify-between">
             <div class="flex items-center gap-3">
-                <span class="text-xl">💼</span>
+                <span class="text-xl">📈</span>
                 <div>
                     <h1 class="text-sm font-bold text-white tracking-wide">Carteira de Investimentos</h1>
                     <p class="text-[0.68rem] text-slate-500">Desenvolvido por gveronezg & antigravity</p>
                 </div>
-            
+
             </div>
-            
+
             <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
                 <div class="text-right">
-                    <p class="text-[0.62rem] uppercase tracking-wider text-slate-400">Total Carteira</p>
+                    <p class="text-[0.62rem] uppercase tracking-wider text-slate-400">Total Patrimonial</p>
                     <p id="hdr-total" class="text-xl font-extrabold text-white">R$ 0,00</p>
                 </div>
-            
+
                 <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
-                    <p class="text-[0.62rem] uppercase tracking-wider text-blue-400">Base 100%</p>
+                    <p class="text-[0.62rem] uppercase tracking-wider text-blue-400">Carteira Estrutural</p>
                     <p id="hdr-base" class="text-lg font-bold text-blue-300">R$ 0,00</p>
                 </div>
-            
+
                 <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
                     <p class="text-[0.62rem] uppercase tracking-wider text-emerald-400">Total Bruto</p>
                     <p id="hdr-bruto" class="text-base font-bold text-emerald-400">R$ 0,00</p>
                 </div>
-            
+
                 <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
                     <p class="text-[0.62rem] uppercase tracking-wider text-slate-400">Lançamentos</p>
                     <p id="hdr-count" class="text-base font-bold text-slate-300">0</p>
@@ -444,18 +444,23 @@
 
                 <!-- Toggle Rebalanceamento -->
                 <div class="flex items-center gap-2 border-l border-slate-800 pl-3 sm:pl-5">
-                    <label for="rebalance-toggle" class="text-[0.62rem] uppercase tracking-wider text-slate-400 cursor-pointer select-none">Rebalancear</label>
+                    <label for="rebalance-toggle"
+                        class="text-[0.62rem] uppercase tracking-wider text-slate-400 cursor-pointer select-none">Rebalancear</label>
                     <div class="relative">
-                        <input type="checkbox" id="rebalance-toggle" class="sr-only peer" onchange="toggleRebalance(this)">
-                        <div class="w-9 h-5 bg-slate-700 rounded-full peer-checked:bg-blue-600 transition-colors cursor-pointer" onclick="document.getElementById('rebalance-toggle').click()"></div>
-                        <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-4 pointer-events-none"></div>
+                        <input type="checkbox" id="rebalance-toggle" class="sr-only peer"
+                            onchange="toggleRebalance(this)">
+                        <div class="w-9 h-5 bg-slate-700 rounded-full peer-checked:bg-blue-600 transition-colors cursor-pointer"
+                            onclick="document.getElementById('rebalance-toggle').click()"></div>
+                        <div
+                            class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-4 pointer-events-none">
+                        </div>
                     </div>
                 </div>
-            
+
             </div>
-            
+
         </div>
-            
+
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-4 space-y-4">
@@ -479,11 +484,11 @@
                         🗑
                     </button>
                 </div>
-            
+
 
                 <!-- Divisor vertical no desktop -->
                 <div class="hidden lg:block w-[1px] h-6 bg-slate-800"></div>
-            
+
 
                 <!-- Saída CSV Compacta (Textarea preserva quebras de linha \n) -->
                 <div class="flex-1 flex items-center gap-2">
@@ -499,10 +504,10 @@
                         Copiar
                     </button>
                 </div>
-            
+
 
             </div>
-            
+
             <span id="import-msg" class="text-xs hidden font-medium mt-1.5 block"></span>
         </section>
 
@@ -519,9 +524,10 @@
                         Alterne entre visão por SuperPoderes ou explore a custódia separadamente por Local.
                     </p>
                 </div>
-            
+
                 <!-- Abas de Alternância: SuperPoderes vs Local -->
-                <div class="flex items-center gap-1 bg-[#090f1c] p-1 rounded-lg border border-slate-800" role="tablist" aria-label="Visão geral tabs">
+                <div class="flex items-center gap-1 bg-[#090f1c] p-1 rounded-lg border border-slate-800" role="tablist"
+                    aria-label="Visão geral tabs">
                     <button id="tab-btn-poderes" onclick="switchOverviewTab('poderes')" role="tab" aria-selected="true"
                         class="px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-white bg-blue-600 shadow">
                         ⚡ SuperPoderes
@@ -531,18 +537,18 @@
                         🏦 Por Local
                     </button>
                 </div>
-            
+
             </div>
-            
+
 
             <!-- Barra de Filtros Rápidos por Local (visível quando há registros) -->
             <div id="local-filter-bar" class="flex items-center gap-1.5 flex-wrap pt-0.5">
                 <span class="text-[0.68rem] font-semibold text-slate-400 uppercase tracking-wider mr-1">Filtrar
                     Local:</span>
                 <div id="local-filter-pills" class="flex items-center gap-1.5 flex-wrap"></div>
-            
+
             </div>
-            
+
 
             <!-- Nível 1: Cards Dinâmicos (SuperPoderes ou Locais dependendo da aba ativa) -->
             <div id="cards-container" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
@@ -550,9 +556,9 @@
                     class="col-span-full text-center text-xs py-6 border border-dashed border-slate-800 rounded-lg text-slate-500">
                     Nenhum registro carregado. Cole um CSV acima ou adicione um lançamento abaixo.
                 </div>
-            
+
             </div>
-            
+
 
             <!-- Nível 2 e 3: Painel Expandido de Drill-Down -->
             <div id="drill-panel"
@@ -566,13 +572,13 @@
                         <span id="drill-badge-alvo"
                             class="text-[0.68rem] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium"></span>
                     </div>
-            
+
                     <button onclick="closeDrillDown()"
                         class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded bg-slate-900 border border-slate-800">
                         ✕ Fechar Detalhes
                     </button>
                 </div>
-            
+
 
                 <!-- Sub-itens em Chips Clicáveis (SubPoderes ou SuperPoderes dentro do Local) -->
                 <div>
@@ -581,9 +587,9 @@
                         SubPoderes (clique para filtrar ativos específicos):
                     </p>
                     <div id="drill-subpowers" class="flex flex-wrap gap-2"></div>
-            
+
                 </div>
-            
+
 
                 <!-- Tabela Aprofundada dos Ativos desse Poder/Local -->
                 <div class="overflow-x-auto rounded-lg border border-slate-800/80 max-h-56 overflow-y-auto">
@@ -602,13 +608,113 @@
                         <tbody id="drill-table-body"></tbody>
                     </table>
                 </div>
-            
+
             </div>
-            
+
         </section>
 
         <!-- ══════════════════════════════════════════════════════
-       3 · FORMULÁRIO DE LANÇAMENTO (Validação para habilitar botão)
+       3 · REBALANCEAMENTO (N para N - visível quando toggle ON)
+  ══════════════════════════════════════════════════════════ -->
+        <section id="rebalance-section" class="card p-4 space-y-4 hidden">
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/60 pb-2.5">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span>🔄</span> Rebalanceamento da Carteira
+                    </h2>
+                    <p class="text-[0.68rem] text-slate-500">
+                        Selecione um ou mais lançamentos para liquidar e defina um ou mais novos destinos
+                        proporcionalmente.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Etapa 1: Lista de lançamentos para liquidar (N) -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider">
+                        1. Selecione os lançamentos a liquidar:
+                    </p>
+                    <span id="rebalance-liquidation-total" class="text-xs font-semibold text-amber-400"></span>
+                </div>
+                <div id="rebalance-list"
+                    class="border border-slate-800 rounded-lg overflow-x-auto max-h-60 overflow-y-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#0b1222] text-slate-400 text-[0.62rem] uppercase sticky top-0 z-10">
+                            <tr>
+                                <th class="py-1.5 px-3 w-8"><input type="checkbox" id="rebalance-select-all"
+                                        onchange="toggleAllRebalanceChecks(this)" class="cursor-pointer"></th>
+                                <th class="py-1.5 px-3">SuperPoder</th>
+                                <th class="py-1.5 px-3">SubPoder</th>
+                                <th class="py-1.5 px-3">Local</th>
+                                <th class="py-1.5 px-3">Nome</th>
+                                <th class="py-1.5 px-3 text-right">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rebalance-list-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Etapa 2: Lista de novos lançamentos de destino (N) -->
+            <div class="border-t border-slate-800/60 pt-3 space-y-2.5">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                        <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider">
+                            2. Novos lançamentos a aplicar (Destinos):
+                        </p>
+                        <p class="text-[0.65rem] text-slate-500">
+                            Adicione quantas alocações desejar. Cada valor é calculado automaticamente sobre a nova base
+                            pós-liquidação.
+                        </p>
+                    </div>
+                    <button type="button"
+                        class="btn-action btn-muted text-xs py-1 px-2.5 border border-blue-500/30 text-blue-300 hover:bg-blue-950/40"
+                        onclick="addRebalanceTargetRow()">
+                        ➕ Adicionar Destino
+                    </button>
+                </div>
+
+                <!-- Tabela de novos lançamentos -->
+                <div class="border border-slate-800 rounded-lg overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#0b1222] text-slate-400 text-[0.62rem] uppercase">
+                            <tr>
+                                <th class="py-1.5 px-3">SuperPoder *</th>
+                                <th class="py-1.5 px-3">SubPoder *</th>
+                                <th class="py-1.5 px-3">Local *</th>
+                                <th class="py-1.5 px-3 text-right">% da Carteira Estrutural *</th>
+                                <th class="py-1.5 px-3 text-right">Valor Calculado</th>
+                                <th class="py-1.5 px-3 text-center w-12">Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rebalance-targets-body">
+                            <!-- Linhas inseridas dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Resumo e Ações -->
+                <div
+                    class="p-3 bg-[#080d19] rounded-lg border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                    <div id="reb-summary-info" class="text-xs text-slate-300 space-y-0.5">
+                        <div class="text-[0.68rem] text-slate-400">Aguardando definição de liquidação e alocações...
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn-action btn-success" onclick="applyRebalance()">
+                            🔄 Aplicar Rebalanceamento Completo
+                        </button>
+                        <button class="btn-action btn-muted" onclick="cancelRebalance()">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════
+       4 · FORMULÁRIO DE LANÇAMENTO (Validação para habilitar botão)
   ══════════════════════════════════════════════════════════ -->
         <section class="card p-4">
             <div class="flex items-center justify-between mb-3">
@@ -618,7 +724,7 @@
                     class="hidden text-xs text-red-400 hover:text-red-300 underline font-medium">✕ Cancelar
                     Edição</button>
             </div>
-            
+
 
             <!-- Datalists de Autocomplete -->
             <datalist id="dl-cnpj"></datalist>
@@ -641,7 +747,7 @@
                         <option value="SATÉLITE">SATÉLITE</option>
                     </select>
                 </div>
-            
+
 
                 <!-- 2. SubPoderes (Dependente) -->
                 <div class="flex flex-col">
@@ -650,7 +756,7 @@
                         <option value="">— Escolha SuperPoder 1º —</option>
                     </select>
                 </div>
-            
+
 
                 <!-- 3. Local -->
                 <div class="flex flex-col">
@@ -662,7 +768,7 @@
                         <option value="Digital">Digital</option>
                     </select>
                 </div>
-            
+
 
                 <!-- 4. CNPJ / Identificador -->
                 <div class="flex flex-col">
@@ -670,7 +776,7 @@
                     <input id="f-cnpj" list="dl-cnpj" class="input-field" placeholder="ex: 45278833000157"
                         oninput="validateForm()" />
                 </div>
-            
+
 
                 <!-- 5. Nome do Ativo -->
                 <div class="flex flex-col col-span-2 sm:col-span-1">
@@ -678,7 +784,7 @@
                     <input id="f-nome" list="dl-nome" class="input-field" placeholder="ex: trend di fic rf"
                         oninput="validateForm()" />
                 </div>
-            
+
 
                 <!-- 6. Valor -->
                 <div class="flex flex-col">
@@ -687,17 +793,17 @@
                     <input id="f-valor" class="input-field" placeholder="ex: 1500.50 ou -300"
                         oninput="validateForm()" />
                 </div>
-            
+
 
                 <!-- 7. Data -->
                 <div class="flex flex-col">
                     <label class="form-label" for="f-data">Data (DD/MM/AAAA) *</label>
                     <input id="f-data" class="input-field" placeholder="ex: 26/11/2026" oninput="validateForm()" />
                 </div>
-            
+
 
             </div>
-            
+
 
             <div class="mt-3 flex items-center justify-between flex-wrap gap-2">
                 <div class="flex gap-2 items-center">
@@ -709,109 +815,16 @@
                         Limpar Campos
                     </button>
                 </div>
-            
+
                 <p id="form-validation-hint" class="text-[0.68rem] text-slate-500 italic">
                     * Preencha todos os campos obrigatórios para habilitar a inclusão.
                 </p>
             </div>
-            
+
         </section>
 
         <!-- ══════════════════════════════════════════════════════
-       3.5 · REBALANCEAMENTO (visível quando toggle ON)
-  ══════════════════════════════════════════════════════════ -->
-        <section id="rebalance-section" class="card p-4 space-y-4 hidden">
-            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/60 pb-2.5">
-                <div>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                        <span>🔄</span> Rebalanceamento
-                    </h2>
-                    <p class="text-[0.68rem] text-slate-500">
-                        Selecione lançamentos para liquidar e defina um novo investimento proporcional.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Lista de lançamentos para liquidar -->
-            <div>
-                <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    Selecione os lançamentos a liquidar:
-                </p>
-                <div id="rebalance-list" class="border border-slate-800 rounded-lg overflow-hidden">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-[#0b1222] text-slate-400 text-[0.62rem] uppercase">
-                            <tr>
-                                <th class="py-1.5 px-3 w-8"><input type="checkbox" id="rebalance-select-all" onchange="toggleAllRebalanceChecks(this)" class="cursor-pointer"></th>
-                                <th class="py-1.5 px-3">SuperPoder</th>
-                                <th class="py-1.5 px-3">SubPoder</th>
-                                <th class="py-1.5 px-3">Local</th>
-                                <th class="py-1.5 px-3">Nome</th>
-                                <th class="py-1.5 px-3 text-right">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rebalance-list-body"></tbody>
-                    </table>
-                </div>
-                <p id="rebalance-liquidation-total" class="text-[0.68rem] text-slate-400 mt-1.5 text-right"></p>
-            </div>
-
-            <!-- Formulário do novo lançamento -->
-            <div class="border-t border-slate-800/60 pt-3">
-                <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    Novo lançamento de rebalanceamento:
-                </p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <div class="flex flex-col">
-                        <label class="form-label" for="reb-super">SuperPoder *</label>
-                        <select id="reb-super" class="input-field" onchange="onRebSuperChange()">
-                            <option value="">— Selecione —</option>
-                            <option value="CORRENTE">CORRENTE</option>
-                            <option value="SEGURANÇA">SEGURANÇA</option>
-                            <option value="ESTABILIDADE">ESTABILIDADE</option>
-                            <option value="DIVERSIFICAÇÃO">DIVERSIFICAÇÃO</option>
-                            <option value="VALORIZAÇÃO">VALORIZAÇÃO</option>
-                            <option value="ANTIFRAGILIDADE">ANTIFRAGILIDADE</option>
-                            <option value="PREVIDÊNCIA">PREVIDÊNCIA</option>
-                            <option value="SATÉLITE">SATÉLITE</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="form-label" for="reb-sub">SubPoder *</label>
-                        <select id="reb-sub" class="input-field" disabled>
-                            <option value="">— Escolha SuperPoder 1º —</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="form-label" for="reb-local">Local *</label>
-                        <select id="reb-local" class="input-field">
-                            <option value="">— Selecione —</option>
-                            <option value="XP">XP</option>
-                            <option value="BTG">BTG</option>
-                            <option value="Digital">Digital</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="form-label" for="reb-pct">% do SuperPoder *</label>
-                        <input id="reb-pct" type="number" min="0" max="100" step="0.01" class="input-field" placeholder="ex: 10">
-                    </div>
-                </div>
-
-                <div class="mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                    <div class="flex gap-2">
-                        <button class="btn-action btn-success" onclick="applyRebalance()">
-                            🔄 Aplicar Rebalanceamento
-                        </button>
-                        <button class="btn-action btn-muted" onclick="cancelRebalance()">
-                            Cancelar
-                        </button>
-                    </div>
-                    <p id="reb-preview" class="text-[0.68rem] text-slate-400 italic"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ══════════════════════════════════════════════════════
-       4 · TABELA DE LANÇAMENTOS E CONSOLIDAÇÃO
+       5 · TABELA DE LANÇAMENTOS E CONSOLIDAÇÃO
   ══════════════════════════════════════════════════════════ -->
         <section class="card">
             <div class="px-4 py-2.5 flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/80">
@@ -819,11 +832,11 @@
                     <span class="font-bold text-xs uppercase tracking-wider text-slate-200">📋 Lançamentos</span>
                     <span id="tbl-count" class="text-xs text-slate-500"></span>
                 </div>
-            
+
                 <input id="search-box" oninput="renderTable()" placeholder="🔍 Filtrar registros..." class="input-field"
                     style="width:180px;font-size:0.75rem;padding:0.35rem 0.55rem" />
             </div>
-            
+
 
             <div class="table-wrapper">
                 <table>
@@ -851,7 +864,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
         </section>
 
         <footer class="text-center text-[0.65rem] pb-4 text-slate-600">
@@ -1873,13 +1886,22 @@
         }
 
         /* ═══════════════════════════════════════
-           REBALANCEAMENTO
+           REBALANCEAMENTO (N PARA N)
         ═══════════════════════════════════════ */
+        let rebTargetRowId = 1;
+
         function toggleRebalance(el) {
             const section = document.getElementById('rebalance-section');
             if (el.checked) {
                 section.classList.remove('hidden');
                 renderRebalanceList();
+                // Se não houver linhas de destino, adiciona a primeira
+                const tbody = document.getElementById('rebalance-targets-body');
+                if (!tbody.children.length) {
+                    addRebalanceTargetRow();
+                } else {
+                    updateRebalanceSummary();
+                }
             } else {
                 section.classList.add('hidden');
             }
@@ -1897,7 +1919,7 @@
 
             for (const r of records) {
                 const tr = document.createElement('tr');
-                tr.className = 'border-b border-slate-800/40';
+                tr.className = 'border-b border-slate-800/40 hover:bg-slate-900/50';
                 tr.innerHTML = `
                     <td class="py-1.5 px-3"><input type="checkbox" class="liquidate-check cursor-pointer" data-id="${r.id}" onchange="updateLiquidationTotal()"></td>
                     <td class="py-1.5 px-3 text-slate-200 font-medium whitespace-nowrap">${escHtml(r.super)}</td>
@@ -1917,158 +1939,239 @@
             updateLiquidationTotal();
         }
 
-        function updateLiquidationTotal() {
+        function getLiquidatedData() {
             const checks = document.querySelectorAll('.liquidate-check:checked');
+            const ids = [];
             let sum = 0;
             checks.forEach(c => {
                 const id = parseInt(c.dataset.id);
                 const rec = records.find(r => r.id === id);
-                if (rec) sum += rec.valor;
+                if (rec) {
+                    ids.push(id);
+                    sum += rec.valor;
+                }
             });
-
-            const totalEl = document.getElementById('rebalance-liquidation-total');
-            if (checks.length > 0) {
-                totalEl.textContent = `${checks.length} selecionado(s) · Total a liquidar: ${fmtBRL(sum)}`;
-            } else {
-                totalEl.textContent = '';
-            }
-
-            // Atualizar preview do novo lançamento
-            updateRebPreview();
+            return { ids, sum, count: checks.length };
         }
 
-        function onRebSuperChange() {
-            const superVal = document.getElementById('reb-super').value;
-            const subSelect = document.getElementById('reb-sub');
+        function updateLiquidationTotal() {
+            const { sum, count } = getLiquidatedData();
+            const totalEl = document.getElementById('rebalance-liquidation-total');
+            if (count > 0) {
+                totalEl.textContent = `✓ ${count} selecionado(s) para liquidar · Total: ${fmtBRL(sum)}`;
+            } else {
+                totalEl.textContent = 'Nenhum lançamento selecionado';
+            }
+            updateRebalanceSummary();
+        }
+
+        function addRebalanceTargetRow() {
+            const tbody = document.getElementById('rebalance-targets-body');
+            const rowId = rebTargetRowId++;
+
+            const tr = document.createElement('tr');
+            tr.id = `reb-row-${rowId}`;
+            tr.className = 'border-b border-slate-800/40 target-row';
+
+            const superOpts = Object.keys(SUBPODERES_MAP).map(sp => `<option value="${escAttr(sp)}">${escHtml(sp)}</option>`).join('');
+
+            tr.innerHTML = `
+                <td class="py-1.5 px-2">
+                    <select class="input-field py-1 text-xs reb-target-super" onchange="onTargetSuperChange(${rowId})">
+                        <option value="">— Selecione —</option>
+                        ${superOpts}
+                    </select>
+                </td>
+                <td class="py-1.5 px-2">
+                    <select class="input-field py-1 text-xs reb-target-sub" disabled onchange="updateRebalanceSummary()">
+                        <option value="">— Escolha 1º —</option>
+                    </select>
+                </td>
+                <td class="py-1.5 px-2">
+                    <select class="input-field py-1 text-xs reb-target-local" onchange="updateRebalanceSummary()">
+                        <option value="XP">XP</option>
+                        <option value="BTG">BTG</option>
+                        <option value="Digital">Digital</option>
+                    </select>
+                </td>
+                <td class="py-1.5 px-2 text-right">
+                    <div class="flex items-center justify-end gap-1">
+                        <input type="number" min="0" max="100" step="0.01" class="input-field py-1 text-xs text-right reb-target-pct w-20" placeholder="0.00" oninput="updateRebalanceSummary()">
+                        <span class="text-xs text-slate-400">%</span>
+                    </div>
+                </td>
+                <td class="py-1.5 px-2 text-right font-bold text-emerald-400 whitespace-nowrap reb-target-calc-val">
+                    R$ 0,00
+                </td>
+                <td class="py-1.5 px-2 text-center">
+                    <button type="button" onclick="removeRebalanceTargetRow(${rowId})" class="text-slate-500 hover:text-red-400 text-sm font-bold p-1" title="Remover destino">
+                        ✕
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+            updateRebalanceSummary();
+        }
+
+        function removeRebalanceTargetRow(rowId) {
+            const tr = document.getElementById(`reb-row-${rowId}`);
+            if (tr) tr.remove();
+
+            const tbody = document.getElementById('rebalance-targets-body');
+            if (!tbody.children.length) {
+                addRebalanceTargetRow();
+            } else {
+                updateRebalanceSummary();
+            }
+        }
+
+        function onTargetSuperChange(rowId) {
+            const tr = document.getElementById(`reb-row-${rowId}`);
+            if (!tr) return;
+
+            const superSel = tr.querySelector('.reb-target-super');
+            const subSel = tr.querySelector('.reb-target-sub');
+            const superVal = superSel.value;
 
             if (!superVal || !SUBPODERES_MAP[superVal]) {
-                subSelect.disabled = true;
-                subSelect.innerHTML = '<option value="">— Escolha SuperPoder 1º —</option>';
-                return;
+                subSel.disabled = true;
+                subSel.innerHTML = '<option value="">— Escolha 1º —</option>';
+            } else {
+                subSel.disabled = false;
+                const subs = SUBPODERES_MAP[superVal] || [];
+                subSel.innerHTML = subs.map(s => `<option value="${escAttr(s)}">${escHtml(s)}</option>`).join('');
             }
 
-            subSelect.disabled = false;
-            const allowedSubs = SUBPODERES_MAP[superVal] || [];
-            subSelect.innerHTML = '<option value="">— Selecione o SubPoder —</option>' +
-                allowedSubs.map(sub => `<option value="${escAttr(sub)}">${escHtml(sub)}</option>`).join('');
-
-            updateRebPreview();
+            updateRebalanceSummary();
         }
 
-        function updateRebPreview() {
-            const previewEl = document.getElementById('reb-preview');
-            const pctVal = parseFloat(document.getElementById('reb-pct').value);
-            const superVal = document.getElementById('reb-super').value;
+        function updateRebalanceSummary() {
+            const { sum: liquidatedSum, count: liquidatedCount } = getLiquidatedData();
 
-            if (!superVal || isNaN(pctVal) || pctVal <= 0) {
-                previewEl.textContent = '';
-                return;
-            }
+            // Base estratégica atual
+            const { baseEstrategica: currentBase } = calcTotals();
+            // Nova base após liquidação somada
+            const newBase = currentBase + liquidatedSum;
 
-            // Calcular valor liquidado dos checks selecionados
-            const checks = document.querySelectorAll('.liquidate-check:checked');
-            let liquidatedSum = 0;
-            checks.forEach(c => {
-                const id = parseInt(c.dataset.id);
-                const rec = records.find(r => r.id === id);
-                if (rec) liquidatedSum += rec.valor;
-            });
+            const targetRows = document.querySelectorAll('#rebalance-targets-body tr.target-row');
+            let totalAllocated = 0;
+            let validTargetsCount = 0;
 
-            // Nova base = base atual (dos superpoderes com base 100%) + valor liquidado
-            const { baseEstrategica } = calcTotals();
-            const newBase = baseEstrategica + liquidatedSum;
-            const valorNovo = (pctVal / 100) * newBase;
+            targetRows.forEach(tr => {
+                const superSel = tr.querySelector('.reb-target-super');
+                const pctInput = tr.querySelector('.reb-target-pct');
+                const calcValEl = tr.querySelector('.reb-target-calc-val');
 
-            previewEl.innerHTML = `Prévia: Nova base 100% = ${fmtBRL(newBase)} → <strong class="text-blue-300">${fmtPct(pctVal)}</strong> = <strong class="text-emerald-300">${fmtBRL(valorNovo)}</strong>`;
-        }
+                const superVal = superSel ? superSel.value : '';
+                const pctVal = pctInput ? parseFloat(pctInput.value) : NaN;
 
-        // Atualizar preview ao digitar %
-        document.getElementById('reb-pct').addEventListener('input', updateRebPreview);
-
-        function applyRebalance() {
-            const superVal = document.getElementById('reb-super').value;
-            const subVal = document.getElementById('reb-sub').value;
-            const localVal = document.getElementById('reb-local').value;
-            const pctVal = parseFloat(document.getElementById('reb-pct').value);
-
-            // Validações
-            if (!superVal) { alert('Selecione o SuperPoder.'); return; }
-            if (!subVal) { alert('Selecione o SubPoder.'); return; }
-            if (!localVal) { alert('Selecione o Local.'); return; }
-            if (isNaN(pctVal) || pctVal <= 0 || pctVal > 100) {
-                alert('Informe um percentual válido (0-100).');
-                return;
-            }
-
-            // Obter lançamentos selecionados para liquidar
-            const checks = document.querySelectorAll('.liquidate-check:checked');
-            const liquidateIds = [];
-            let liquidatedSum = 0;
-            checks.forEach(c => {
-                const id = parseInt(c.dataset.id);
-                const rec = records.find(r => r.id === id);
-                if (rec) {
-                    liquidateIds.push(id);
-                    liquidatedSum += rec.valor;
+                if (superVal && !isNaN(pctVal) && pctVal > 0) {
+                    const rowVal = (pctVal / 100) * newBase;
+                    calcValEl.textContent = fmtBRL(rowVal);
+                    totalAllocated += rowVal;
+                    validTargetsCount++;
+                } else {
+                    calcValEl.textContent = 'R$ 0,00';
                 }
             });
 
-            // Remover lançamentos liquidados
+            const summaryEl = document.getElementById('reb-summary-info');
+            summaryEl.innerHTML = `
+                <div class="flex items-center gap-4 flex-wrap">
+                    <span>Base 100% Atual: <b>${fmtBRL(currentBase)}</b></span>
+                    <span>+ Liquidado: <b class="text-amber-400">${fmtBRL(liquidatedSum)}</b> (${liquidatedCount} itens)</span>
+                    <span class="text-blue-300 font-bold border-l border-slate-700 pl-3">Nova Base 100%: ${fmtBRL(newBase)}</span>
+                </div>
+                <div class="flex items-center gap-4 flex-wrap pt-1 text-[0.72rem]">
+                    <span>Total a aportar nos ${validTargetsCount} novo(s) destino(s): <b class="text-emerald-400 font-extrabold text-sm">${fmtBRL(totalAllocated)}</b></span>
+                    ${liquidatedSum > 0 ? `<span class="text-slate-400">Saldo remanescente da liquidação: <b>${fmtBRL(liquidatedSum - totalAllocated)}</b></span>` : ''}
+                </div>
+            `;
+        }
+
+        function applyRebalance() {
+            const { ids: liquidateIds, sum: liquidatedSum } = getLiquidatedData();
+
+            // Obter e validar linhas de destino
+            const targetRows = document.querySelectorAll('#rebalance-targets-body tr.target-row');
+            const newTargets = [];
+
+            for (const tr of targetRows) {
+                const superVal = tr.querySelector('.reb-target-super').value;
+                const subVal = tr.querySelector('.reb-target-sub').value;
+                const localVal = tr.querySelector('.reb-target-local').value;
+                const pctVal = parseFloat(tr.querySelector('.reb-target-pct').value);
+
+                if (!superVal && isNaN(pctVal)) continue; // linha vazia ignorada
+
+                if (!superVal) { alert('Selecione o SuperPoder em todos os destinos preenchidos.'); return; }
+                if (!subVal) { alert('Selecione o SubPoder em todos os destinos.'); return; }
+                if (!localVal) { alert('Selecione o Local em todos os destinos.'); return; }
+                if (isNaN(pctVal) || pctVal <= 0 || pctVal > 100) {
+                    alert('Informe um percentual válido (entre 0% e 100%) em cada destino.');
+                    return;
+                }
+
+                newTargets.push({ superVal, subVal, localVal, pctVal });
+            }
+
+            if (!liquidateIds.length && !newTargets.length) {
+                alert('Selecione pelo menos um lançamento para liquidar ou configure pelo menos um novo destino.');
+                return;
+            }
+
+            // 1. Remover lançamentos liquidados
             if (liquidateIds.length > 0) {
                 records = records.filter(r => !liquidateIds.includes(r.id));
             }
 
-            // Recalcular base estratégica após remoções
-            const { baseEstrategica } = calcTotals();
+            // 2. Recalcular base estratégica após liquidações
+            const { baseEstrategica: postLiquidationBase } = calcTotals();
+            // Nova base conforme regra do usuário: base somada + valor liquidado
+            const newBase = postLiquidationBase + liquidatedSum;
 
-            // Nova base = base estratégica atualizada + valor liquidado
-            const newBase = baseEstrategica + liquidatedSum;
+            // 3. Adicionar cada um dos N novos lançamentos
+            let totalInvestido = 0;
+            for (const t of newTargets) {
+                const valorCalculado = Math.round(((t.pctVal / 100) * newBase) * 100) / 100;
+                const alvoVal = ALVOS_MAP[t.superVal] !== undefined ? ALVOS_MAP[t.superVal] : null;
 
-            // Valor do novo lançamento
-            const valorNovo = (pctVal / 100) * newBase;
+                records.push({
+                    id: nextId++,
+                    super: t.superVal,
+                    sub: t.subVal,
+                    local: t.localVal,
+                    cnpj: '',
+                    nome: `Rebalanceamento ${t.subVal}`,
+                    valor: valorCalculado,
+                    alvo: alvoVal,
+                    data: getTodayBR(),
+                });
+                totalInvestido += valorCalculado;
+            }
 
-            // Determinar alvo
-            const alvoVal = ALVOS_MAP[superVal] !== undefined ? ALVOS_MAP[superVal] : null;
-
-            // Criar novo registro
-            records.push({
-                id: nextId++,
-                super: superVal,
-                sub: subVal,
-                local: localVal,
-                cnpj: '',
-                nome: `Rebalanceamento ${subVal}`,
-                valor: Math.round(valorNovo * 100) / 100,
-                alvo: alvoVal,
-                data: getTodayBR(),
-            });
-
-            // Resetar e ocultar seção
             cancelRebalance();
-
-            // Atualizar tudo
             updateDataLists();
             renderAll();
-            showToast(`✓ Rebalanceamento aplicado! ${liquidateIds.length} liquidado(s), novo investimento de ${fmtBRL(valorNovo)} adicionado.`);
+            showToast(`✓ Rebalanceamento concluído! ${liquidateIds.length} liquidado(s) e ${newTargets.length} novo(s) aporte(s) inserido(s) (${fmtBRL(totalInvestido)}).`);
         }
 
         function cancelRebalance() {
             // Desmarcar toggle
             const toggle = document.getElementById('rebalance-toggle');
-            toggle.checked = false;
+            if (toggle) toggle.checked = false;
             document.getElementById('rebalance-section').classList.add('hidden');
 
-            // Limpar formulário
-            document.getElementById('reb-super').value = '';
-            onRebSuperChange();
-            document.getElementById('reb-local').value = '';
-            document.getElementById('reb-pct').value = '';
-            document.getElementById('reb-preview').textContent = '';
-            document.getElementById('rebalance-liquidation-total').textContent = '';
+            // Limpar linhas de destinos
+            document.getElementById('rebalance-targets-body').innerHTML = '';
+            rebTargetRowId = 1;
 
             // Desmarcar select all
             const selectAll = document.getElementById('rebalance-select-all');
             if (selectAll) selectAll.checked = false;
+
+            document.getElementById('rebalance-liquidation-total').textContent = '';
         }
 
         /* ═══════════════════════════════════════
