@@ -185,6 +185,27 @@
             background: linear-gradient(145deg, #072a2a, #041617);
         }
 
+        /* Cores dos cards de Local */
+        .local-xp {
+            border-color: rgba(245, 158, 11, 0.35);
+            background: linear-gradient(145deg, #2b1d06, #140d02);
+        }
+
+        .local-btg {
+            border-color: rgba(59, 130, 246, 0.35);
+            background: linear-gradient(145deg, #0a1f3d, #051020);
+        }
+
+        .local-digital {
+            border-color: rgba(168, 85, 247, 0.35);
+            background: linear-gradient(145deg, #200f38, #0e061a);
+        }
+
+        .local-default {
+            border-color: rgba(71, 85, 105, 0.35);
+            background: linear-gradient(145deg, #131c2e, #0b111c);
+        }
+
         .sp-seguranca {
             border-color: rgba(16, 185, 129, 0.3);
             background: linear-gradient(145deg, #062b20, #081b15);
@@ -389,7 +410,7 @@
                 <span class="text-xl">💼</span>
                 <div>
                     <h1 class="text-sm font-bold text-white tracking-wide">Carteira de Investimentos</h1>
-                    <p class="text-[0.68rem] text-slate-500">100% Stateless · Alvos Estratégicos Base 100%</p>
+                    <p class="text-[0.68rem] text-slate-500">Desenvolvido por gveronezg & antigravity</p>
                 </div>
             </div>
             <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
@@ -461,27 +482,44 @@
        2 · ALOCAÇÃO DINÂMICA COM DRILL-DOWN INTERATIVO POR CLIQUES
   ══════════════════════════════════════════════════════════ -->
         <section class="card p-4 space-y-3">
-            <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/60 pb-2.5">
                 <div>
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                        <span>⚡</span> Alocação Interativa por Poderes
+                        <span>⚡</span> Alocação e Visão Geral
                     </h2>
                     <p class="text-[0.68rem] text-slate-500">
-                        Clique em qualquer SuperPoder para expandir seus SubPoderes e ativos correspondentes.
+                        Alterne entre visão por SuperPoderes ou explore a custódia separadamente por Local.
                     </p>
                 </div>
-                <div id="drill-status" class="text-[0.68rem] text-blue-400 font-medium"></div>
+                <!-- Abas de Alternância: SuperPoderes vs Local -->
+                <div class="flex items-center gap-1 bg-[#090f1c] p-1 rounded-lg border border-slate-800">
+                    <button id="tab-btn-poderes" onclick="switchOverviewTab('poderes')"
+                        class="px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-white bg-blue-600 shadow">
+                        ⚡ SuperPoderes
+                    </button>
+                    <button id="tab-btn-locais" onclick="switchOverviewTab('locais')"
+                        class="px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-white">
+                        🏦 Por Local
+                    </button>
+                </div>
             </div>
 
-            <!-- Nível 1: Cards dos SuperPoderes -->
-            <div id="cards-container" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+            <!-- Barra de Filtros Rápidos por Local (visível quando há registros) -->
+            <div id="local-filter-bar" class="flex items-center gap-1.5 flex-wrap pt-0.5">
+                <span class="text-[0.68rem] font-semibold text-slate-400 uppercase tracking-wider mr-1">Filtrar
+                    Local:</span>
+                <div id="local-filter-pills" class="flex items-center gap-1.5 flex-wrap"></div>
+            </div>
+
+            <!-- Nível 1: Cards Dinâmicos (SuperPoderes ou Locais dependendo da aba ativa) -->
+            <div id="cards-container" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
                 <div id="cards-empty"
                     class="col-span-full text-center text-xs py-6 border border-dashed border-slate-800 rounded-lg text-slate-500">
                     Nenhum registro carregado. Cole um CSV acima ou adicione um lançamento abaixo.
                 </div>
             </div>
 
-            <!-- Nível 2 e 3: Painel Expandido ao Clicar (SubPoderes & Detalhes Aprofundados) -->
+            <!-- Nível 2 e 3: Painel Expandido de Drill-Down -->
             <div id="drill-panel"
                 class="hidden fade-in bg-[#080d19] border border-blue-950/60 rounded-xl p-3.5 space-y-3 mt-2">
                 <div class="flex items-center justify-between border-b border-slate-800/80 pb-2 flex-wrap gap-2">
@@ -499,15 +537,16 @@
                     </button>
                 </div>
 
-                <!-- SubPoderes em Chips Clicáveis -->
+                <!-- Sub-itens em Chips Clicáveis (SubPoderes ou SuperPoderes dentro do Local) -->
                 <div>
-                    <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                    <p id="drill-chips-title"
+                        class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">
                         SubPoderes (clique para filtrar ativos específicos):
                     </p>
                     <div id="drill-subpowers" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Tabela Aprofundada dos Ativos desse Poder/Subpoder -->
+                <!-- Tabela Aprofundada dos Ativos desse Poder/Local -->
                 <div class="overflow-x-auto rounded-lg border border-slate-800/80 max-h-56 overflow-y-auto">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-[#0b1222] text-slate-400 text-[0.62rem] uppercase">
@@ -688,6 +727,9 @@
         /* Estado da exploração de alocação (Drill-down) */
         let activePowerFilter = null;
         let activeSubPowerFilter = null;
+        let activeLocalFilter = null; // null = todos os locais
+        let overviewTab = 'poderes'; // 'poderes' ou 'locais'
+        let activeLocalDrill = null; // quando na aba locais, qual local está expandido
 
         /* Mapeamento hierárquico SuperPoderes -> SubPoderes */
         const SUBPODERES_MAP = {
@@ -1112,6 +1154,73 @@
         }
 
         /* ═══════════════════════════════════════
+           CONTROLE DE ABAS E FILTROS DE LOCAL
+        ═══════════════════════════════════════ */
+        function switchOverviewTab(tabName) {
+            overviewTab = tabName;
+            const btnPoderes = document.getElementById('tab-btn-poderes');
+            const btnLocais = document.getElementById('tab-btn-locais');
+
+            if (tabName === 'poderes') {
+                btnPoderes.className = 'px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-white bg-blue-600 shadow';
+                btnLocais.className = 'px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-white';
+            } else {
+                btnLocais.className = 'px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-white bg-blue-600 shadow';
+                btnPoderes.className = 'px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-white';
+            }
+            closeDrillDown();
+            renderAll();
+        }
+
+        function setLocalFilter(localName) {
+            if (activeLocalFilter === localName) {
+                activeLocalFilter = null; // Toggle off
+            } else {
+                activeLocalFilter = localName;
+            }
+            closeDrillDown();
+            renderAll();
+        }
+
+        function renderLocalFilterBar(totalGeral) {
+            const bar = document.getElementById('local-filter-bar');
+            const container = document.getElementById('local-filter-pills');
+            container.innerHTML = '';
+
+            if (!records.length) {
+                bar.classList.add('hidden');
+                return;
+            }
+            bar.classList.remove('hidden');
+
+            // Agrupa valores por local
+            const localSums = {};
+            for (const r of records) {
+                const loc = r.local || '(Sem Local)';
+                localSums[loc] = (localSums[loc] || 0) + r.valor;
+            }
+
+            // Pill "Todos"
+            const allPill = document.createElement('button');
+            const isAllActive = activeLocalFilter === null;
+            allPill.className = `px-2 py-0.5 text-xs rounded-full border transition-all flex items-center gap-1.5 ${isAllActive ? 'bg-blue-600 border-blue-500 text-white font-semibold' : 'bg-[#0a101f] border-slate-800 text-slate-400 hover:border-slate-700'}`;
+            allPill.innerHTML = `<span>Todos</span> <span class="text-[0.62rem] opacity-75">${fmtBRL(totalGeral)}</span>`;
+            allPill.onclick = () => setLocalFilter(null);
+            container.appendChild(allPill);
+
+            // Pills de cada local
+            for (const [locName, sum] of Object.entries(localSums)) {
+                const isAct = activeLocalFilter === locName;
+                const pct = totalGeral !== 0 ? (sum / totalGeral) * 100 : 0;
+                const pill = document.createElement('button');
+                pill.className = `px-2 py-0.5 text-xs rounded-full border transition-all flex items-center gap-1.5 ${isAct ? 'bg-blue-600 border-blue-500 text-white font-semibold shadow' : 'bg-[#0a101f] border-slate-800 text-slate-300 hover:border-slate-700'}`;
+                pill.innerHTML = `<span>${escHtml(locName)}</span> <span class="text-[0.62rem] font-medium opacity-85">${fmtBRL(sum)} (${fmtPct(pct)})</span>`;
+                pill.onclick = () => setLocalFilter(locName);
+                container.appendChild(pill);
+            }
+        }
+
+        /* ═══════════════════════════════════════
            DRILL-DOWN INTERATIVO POR CLIQUES
         ═══════════════════════════════════════ */
         function selectPowerDrill(powerName) {
@@ -1120,6 +1229,19 @@
                 return;
             }
             activePowerFilter = powerName;
+            activeSubPowerFilter = null;
+            activeLocalDrill = null;
+            renderDrillPanel();
+            renderCards();
+        }
+
+        function selectLocalDrill(localName) {
+            if (activeLocalDrill === localName) {
+                closeDrillDown();
+                return;
+            }
+            activeLocalDrill = localName;
+            activePowerFilter = null;
             activeSubPowerFilter = null;
             renderDrillPanel();
             renderCards();
@@ -1137,98 +1259,187 @@
         function closeDrillDown() {
             activePowerFilter = null;
             activeSubPowerFilter = null;
+            activeLocalDrill = null;
             document.getElementById('drill-panel').classList.add('hidden');
             renderCards();
         }
 
         function renderDrillPanel() {
             const panel = document.getElementById('drill-panel');
-            if (!activePowerFilter) {
+            if (!activePowerFilter && !activeLocalDrill) {
                 panel.classList.add('hidden');
                 return;
             }
 
             const { total, baseEstrategica } = calcTotals();
-            const powerRecs = records.filter(r => r.super === activePowerFilter);
-            const powerSum = powerRecs.reduce((s, r) => s + r.valor, 0);
-            const pctBase = baseEstrategica > 0 ? (powerSum / baseEstrategica) * 100 : 0;
-            const alvoDef = ALVOS_MAP[activePowerFilter];
-
             panel.classList.remove('hidden');
 
-            document.getElementById('drill-title').textContent = activePowerFilter;
-            document.getElementById('drill-badge-base').textContent = `${fmtBRL(powerSum)} (${fmtPct(pctBase)} da Base 100%)`;
-
+            const drillIcon = document.getElementById('drill-icon');
+            const drillTitle = document.getElementById('drill-title');
+            const badgeBase = document.getElementById('drill-badge-base');
             const badgeAlvo = document.getElementById('drill-badge-alvo');
-            if (alvoDef !== null && alvoDef !== undefined) {
-                const diff = pctBase - alvoDef;
-                badgeAlvo.textContent = `Alvo: ${fmtPct(alvoDef)} | Dif: ${diff >= 0 ? '+' : ''}${fmtPct(diff)}`;
-                badgeAlvo.className = `text-[0.68rem] px-2 py-0.5 rounded-full font-semibold border ${diff > 1 ? 'bg-red-950/80 text-red-300 border-red-800/40' : diff < -1 ? 'bg-amber-950/80 text-amber-300 border-amber-800/40' : 'bg-emerald-950/80 text-emerald-300 border-emerald-800/40'}`;
-            } else {
-                badgeAlvo.textContent = 'Referente à base';
-                badgeAlvo.className = 'text-[0.68rem] px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800';
-            }
-
-            // Agrupamento de SubPoderes
-            const subGroup = {};
-            for (const r of powerRecs) {
-                const sub = r.sub || '(Sem SubPoder)';
-                if (!subGroup[sub]) subGroup[sub] = { sum: 0, count: 0 };
-                subGroup[sub].sum += r.valor;
-                subGroup[sub].count++;
-            }
-
+            const chipsTitle = document.getElementById('drill-chips-title');
             const subChipsContainer = document.getElementById('drill-subpowers');
-            subChipsContainer.innerHTML = '';
-
-            // Opção "Todos"
-            const allChip = document.createElement('div');
-            allChip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 ${!activeSubPowerFilter ? 'active font-bold text-blue-300' : 'text-slate-400'}`;
-            allChip.innerHTML = `<span>Todos os SubPoderes</span> <span class="text-[0.62rem] opacity-70">(${powerRecs.length})</span>`;
-            allChip.onclick = () => selectSubPowerDrill(null);
-            subChipsContainer.appendChild(allChip);
-
-            for (const [subName, sg] of Object.entries(subGroup)) {
-                const isAct = activeSubPowerFilter === subName;
-                const pctDoPoder = powerSum !== 0 ? (sg.sum / powerSum) * 100 : 0;
-                const chip = document.createElement('div');
-                chip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-2 ${isAct ? 'active font-bold text-blue-300' : 'text-slate-300'}`;
-                chip.innerHTML = `
-      <span>${escHtml(subName)}</span>
-      <span class="text-[0.68rem] font-semibold text-slate-400">${fmtBRL(sg.sum)}</span>
-      <span class="text-[0.62rem] opacity-60">(${fmtPct(pctDoPoder)})</span>
-    `;
-                chip.onclick = () => selectSubPowerDrill(subName);
-                subChipsContainer.appendChild(chip);
-            }
-
-            // Tabela filtrada
-            let filteredTableRecs = powerRecs;
-            if (activeSubPowerFilter) {
-                filteredTableRecs = filteredTableRecs.filter(r => r.sub === activeSubPowerFilter);
-            }
-
             const drillTbody = document.getElementById('drill-table-body');
+            subChipsContainer.innerHTML = '';
             drillTbody.innerHTML = '';
 
-            if (!filteredTableRecs.length) {
-                drillTbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-slate-500">Nenhum ativo encontrado para esta seleção.</td></tr>';
-            } else {
-                for (const r of filteredTableRecs) {
-                    const pctPoderLinha = powerSum !== 0 ? (r.valor / powerSum) * 100 : 0;
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-        <td class="py-1.5 px-3 text-slate-300 font-medium">${escHtml(r.sub)}</td>
-        <td class="py-1.5 px-3 text-slate-400">${escHtml(r.local)}</td>
-        <td class="py-1.5 px-3 font-mono text-[0.68rem] text-slate-400">${escHtml(r.cnpj)}</td>
-        <td class="py-1.5 px-3 text-white font-medium">${escHtml(r.nome)}</td>
-        <td class="py-1.5 px-3 text-right font-semibold ${r.valor < 0 ? 'neg' : 'pos'}">${fmtBRL(r.valor)}</td>
-        <td class="py-1.5 px-3 text-right text-slate-400">${fmtPct(pctPoderLinha)}</td>
-        <td class="py-1.5 px-3 text-slate-400">${escHtml(r.data)}</td>
-      `;
-                    drillTbody.appendChild(tr);
+            // MODO 1: DRILL-DOWN DE SUPERPODER
+            if (activePowerFilter) {
+                drillIcon.textContent = '⚡';
+                drillTitle.textContent = activePowerFilter;
+                chipsTitle.textContent = 'SubPoderes (clique para filtrar ativos específicos):';
+
+                let powerRecs = records.filter(r => r.super === activePowerFilter);
+                if (activeLocalFilter) {
+                    powerRecs = powerRecs.filter(r => r.local === activeLocalFilter);
+                }
+
+                const powerSum = powerRecs.reduce((s, r) => s + r.valor, 0);
+                const pctBase = baseEstrategica > 0 ? (powerSum / baseEstrategica) * 100 : 0;
+                const alvoDef = ALVOS_MAP[activePowerFilter];
+
+                badgeBase.textContent = `${fmtBRL(powerSum)} (${fmtPct(pctBase)} da Base 100%)`;
+
+                if (alvoDef !== null && alvoDef !== undefined) {
+                    const diff = pctBase - alvoDef;
+                    badgeAlvo.textContent = `Alvo: ${fmtPct(alvoDef)} | Dif: ${diff >= 0 ? '+' : ''}${fmtPct(diff)}`;
+                    badgeAlvo.className = `text-[0.68rem] px-2 py-0.5 rounded-full font-semibold border ${diff > 1 ? 'bg-red-950/80 text-red-300 border-red-800/40' : diff < -1 ? 'bg-amber-950/80 text-amber-300 border-amber-800/40' : 'bg-emerald-950/80 text-emerald-300 border-emerald-800/40'}`;
+                } else {
+                    badgeAlvo.textContent = 'Referente à base';
+                    badgeAlvo.className = 'text-[0.68rem] px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800';
+                }
+
+                // Agrupamento de SubPoderes
+                const subGroup = {};
+                for (const r of powerRecs) {
+                    const sub = r.sub || '(Sem SubPoder)';
+                    if (!subGroup[sub]) subGroup[sub] = { sum: 0, count: 0 };
+                    subGroup[sub].sum += r.valor;
+                    subGroup[sub].count++;
+                }
+
+                // Opção "Todos"
+                const allChip = document.createElement('div');
+                allChip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 ${!activeSubPowerFilter ? 'active font-bold text-blue-300' : 'text-slate-400'}`;
+                allChip.innerHTML = `<span>Todos os SubPoderes</span> <span class="text-[0.62rem] opacity-70">(${powerRecs.length})</span>`;
+                allChip.onclick = () => selectSubPowerDrill(null);
+                subChipsContainer.appendChild(allChip);
+
+                for (const [subName, sg] of Object.entries(subGroup)) {
+                    const isAct = activeSubPowerFilter === subName;
+                    const pctDoPoder = powerSum !== 0 ? (sg.sum / powerSum) * 100 : 0;
+                    const chip = document.createElement('div');
+                    chip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-2 ${isAct ? 'active font-bold text-blue-300' : 'text-slate-300'}`;
+                    chip.innerHTML = `
+                        <span>${escHtml(subName)}</span>
+                        <span class="text-[0.68rem] font-semibold text-slate-400">${fmtBRL(sg.sum)}</span>
+                        <span class="text-[0.62rem] opacity-60">(${fmtPct(pctDoPoder)})</span>
+                    `;
+                    chip.onclick = () => selectSubPowerDrill(subName);
+                    subChipsContainer.appendChild(chip);
+                }
+
+                let filteredTableRecs = powerRecs;
+                if (activeSubPowerFilter) {
+                    filteredTableRecs = filteredTableRecs.filter(r => r.sub === activeSubPowerFilter);
+                }
+
+                if (!filteredTableRecs.length) {
+                    drillTbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-slate-500">Nenhum ativo encontrado para esta seleção.</td></tr>';
+                } else {
+                    for (const r of filteredTableRecs) {
+                        const pctPoderLinha = powerSum !== 0 ? (r.valor / powerSum) * 100 : 0;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="py-1.5 px-3 text-slate-300 font-medium">${escHtml(r.sub)}</td>
+                            <td class="py-1.5 px-3 text-slate-400">${escHtml(r.local)}</td>
+                            <td class="py-1.5 px-3 font-mono text-[0.68rem] text-slate-400">${escHtml(r.cnpj)}</td>
+                            <td class="py-1.5 px-3 text-white font-medium">${escHtml(r.nome)}</td>
+                            <td class="py-1.5 px-3 text-right font-semibold ${r.valor < 0 ? 'neg' : 'pos'}">${fmtBRL(r.valor)}</td>
+                            <td class="py-1.5 px-3 text-right text-slate-400">${fmtPct(pctPoderLinha)}</td>
+                            <td class="py-1.5 px-3 text-slate-400">${escHtml(r.data)}</td>
+                        `;
+                        drillTbody.appendChild(tr);
+                    }
                 }
             }
+            // MODO 2: DRILL-DOWN DE LOCAL
+            else if (activeLocalDrill) {
+                drillIcon.textContent = '🏦';
+                drillTitle.textContent = `Custódia: ${activeLocalDrill}`;
+                chipsTitle.textContent = 'Divisão por SuperPoderes neste Local:';
+
+                const localRecs = records.filter(r => r.local === activeLocalDrill);
+                const localSum = localRecs.reduce((s, r) => s + r.valor, 0);
+                const pctCarteira = total !== 0 ? (localSum / total) * 100 : 0;
+
+                badgeBase.textContent = `${fmtBRL(localSum)}`;
+                badgeAlvo.textContent = `${fmtPct(pctCarteira)} da Carteira`;
+                badgeAlvo.className = 'text-[0.68rem] px-2 py-0.5 rounded-full bg-blue-900/60 text-blue-300 font-medium border border-blue-700/40';
+
+                // Agrupamento de SuperPoderes dentro deste local
+                const powerGroup = {};
+                for (const r of localRecs) {
+                    const sp = r.super || '(Sem Poder)';
+                    if (!powerGroup[sp]) powerGroup[sp] = { sum: 0, count: 0 };
+                    powerGroup[sp].sum += r.valor;
+                    powerGroup[sp].count++;
+                }
+
+                // Opção "Todos"
+                const allChip = document.createElement('div');
+                allChip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 ${!activeSubPowerFilter ? 'active font-bold text-blue-300' : 'text-slate-400'}`;
+                allChip.innerHTML = `<span>Todos os Poderes</span> <span class="text-[0.62rem] opacity-70">(${localRecs.length})</span>`;
+                allChip.onclick = () => selectSubPowerDrill(null);
+                subChipsContainer.appendChild(allChip);
+
+                for (const [spName, pg] of Object.entries(powerGroup)) {
+                    const isAct = activeSubPowerFilter === spName;
+                    const pctDoLocal = localSum !== 0 ? (pg.sum / localSum) * 100 : 0;
+                    const chip = document.createElement('div');
+                    chip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-2 ${isAct ? 'active font-bold text-blue-300' : 'text-slate-300'}`;
+                    chip.innerHTML = `
+                        <span>${escHtml(spName)}</span>
+                        <span class="text-[0.68rem] font-semibold text-slate-400">${fmtBRL(pg.sum)}</span>
+                        <span class="text-[0.62rem] opacity-60">(${fmtPct(pctDoLocal)})</span>
+                    `;
+                    chip.onclick = () => selectSubPowerDrill(spName);
+                    subChipsContainer.appendChild(chip);
+                }
+
+                let filteredTableRecs = localRecs;
+                if (activeSubPowerFilter) {
+                    filteredTableRecs = filteredTableRecs.filter(r => r.super === activeSubPowerFilter);
+                }
+
+                if (!filteredTableRecs.length) {
+                    drillTbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-slate-500">Nenhum ativo encontrado para esta seleção.</td></tr>';
+                } else {
+                    for (const r of filteredTableRecs) {
+                        const pctLinha = localSum !== 0 ? (r.valor / localSum) * 100 : 0;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="py-1.5 px-3 text-slate-300 font-medium">${escHtml(r.sub)}</td>
+                            <td class="py-1.5 px-3 text-slate-400">${escHtml(r.super)}</td>
+                            <td class="py-1.5 px-3 font-mono text-[0.68rem] text-slate-400">${escHtml(r.cnpj)}</td>
+                            <td class="py-1.5 px-3 text-white font-medium">${escHtml(r.nome)}</td>
+                            <td class="py-1.5 px-3 text-right font-semibold ${r.valor < 0 ? 'neg' : 'pos'}">${fmtBRL(r.valor)}</td>
+                            <td class="py-1.5 px-3 text-right text-slate-400">${fmtPct(pctLinha)}</td>
+                            <td class="py-1.5 px-3 text-slate-400">${escHtml(r.data)}</td>
+                        `;
+                        drillTbody.appendChild(tr);
+                    }
+                }
+            }
+        }
+
+        function getLocalColorClass(loc) {
+            const norm = (loc || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            if (norm.includes('XP')) return 'local-xp';
+            if (norm.includes('BTG')) return 'local-btg';
+            if (norm.includes('DIGITAL') || norm.includes('REVOLUT')) return 'local-digital';
+            return 'local-default';
         }
 
         /* ═══════════════════════════════════════
@@ -1241,9 +1452,10 @@
             document.getElementById('hdr-bruto').textContent = fmtBRL(bruto);
             document.getElementById('hdr-count').textContent = records.length;
 
+            renderLocalFilterBar(total);
             renderCards(total, baseEstrategica);
             renderTable(total, baseEstrategica);
-            if (activePowerFilter) renderDrillPanel();
+            if (activePowerFilter || activeLocalDrill) renderDrillPanel();
         }
 
         function getSuperPoderColorClass(sp) {
@@ -1259,7 +1471,7 @@
             return 'sp-default';
         }
 
-        /* Cards SuperPoderes Clicáveis para Drill-down */
+        /* Cards Dinâmicos: SuperPoderes ou Locais dependendo da aba ativa */
         function renderCards(totalOverride, baseOverride) {
             const { total, baseEstrategica } = totalOverride !== undefined
                 ? { total: totalOverride, baseEstrategica: baseOverride }
@@ -1275,8 +1487,54 @@
             }
             empty.classList.add('hidden');
 
+            // ═════════════════════════════════════════════
+            // ABA: VISÃO POR LOCAL
+            // ═════════════════════════════════════════════
+            if (overviewTab === 'locais') {
+                const localGroups = {};
+                for (const r of records) {
+                    const loc = r.local || '(Sem Local)';
+                    if (!localGroups[loc]) localGroups[loc] = { sum: 0, count: 0 };
+                    localGroups[loc].sum += r.valor;
+                    localGroups[loc].count++;
+                }
+
+                for (const [locName, lg] of Object.entries(localGroups)) {
+                    const pctCarteira = total !== 0 ? (lg.sum / total) * 100 : 0;
+                    const colorClass = getLocalColorClass(locName);
+                    const isActive = activeLocalDrill === locName;
+
+                    const card = document.createElement('div');
+                    card.className = `power-card ${colorClass} ${isActive ? 'active' : ''} p-2.5 flex flex-col justify-between shadow-md`;
+                    card.onclick = () => selectLocalDrill(locName);
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-[0.68rem] font-bold uppercase tracking-wider opacity-90 truncate">${escHtml(locName)}</p>
+                                <span class="text-[0.6rem] opacity-70">${lg.count} ${lg.count === 1 ? 'ativo' : 'ativos'}</span>
+                            </div>
+                            <p class="text-sm font-extrabold mt-0.5 tracking-tight">${fmtBRL(lg.sum)}</p>
+                        </div>
+                        <div class="mt-1.5 pt-1.5 border-t border-white/10 flex justify-between items-center text-[0.62rem]">
+                            <span class="opacity-80">Custódia</span>
+                            <span class="opacity-95 font-semibold text-blue-300">${fmtPct(pctCarteira)} da carteira</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+                return;
+            }
+
+            // ═════════════════════════════════════════════
+            // ABA: VISÃO POR SUPERPODERES (com suporte ao filtro por local)
+            // ═════════════════════════════════════════════
+            let filteredRecords = records;
+            if (activeLocalFilter) {
+                filteredRecords = records.filter(r => r.local === activeLocalFilter);
+            }
+
             const groups = {};
-            for (const r of records) {
+            for (const r of filteredRecords) {
                 const k = r.super || '(Sem Categoria)';
                 if (!groups[k]) groups[k] = { sum: 0, count: 0 };
                 groups[k].sum += r.valor;
@@ -1308,41 +1566,41 @@
                             : `<span class="text-emerald-300 font-bold">✓</span>`;
 
                     targetSection = `
-        <div class="mt-1.5 pt-1.5 border-t border-white/10 space-y-1">
-          <div class="flex justify-between items-center text-[0.62rem]">
-            <span class="opacity-80">Alvo: <b>${fmtPct(alvoDef)}</b></span>
-            ${diffLabel}
-          </div>
-          <div class="bar-track w-full"><div class="bar-fill ${barCls}" style="width:${barW}%"></div></div>
-          <div class="text-[0.62rem] opacity-75 text-right font-medium">${fmtPct(pctBase)} base</div>
-        </div>
-      `;
+                        <div class="mt-1.5 pt-1.5 border-t border-white/10 space-y-1">
+                            <div class="flex justify-between items-center text-[0.62rem]">
+                                <span class="opacity-80">Alvo: <b>${fmtPct(alvoDef)}</b></span>
+                                ${diffLabel}
+                            </div>
+                            <div class="bar-track w-full"><div class="bar-fill ${barCls}" style="width:${barW}%"></div></div>
+                            <div class="text-[0.62rem] opacity-75 text-right font-medium">${fmtPct(pctBase)} base</div>
+                        </div>
+                    `;
                 } else {
                     targetSection = `
-        <div class="mt-1.5 pt-1.5 border-t border-white/10 text-right">
-          <span class="opacity-90 font-medium text-[0.62rem] text-slate-300">${fmtPct(pctBase)} referente a base</span>
-        </div>
-      `;
+                        <div class="mt-1.5 pt-1.5 border-t border-white/10 text-right">
+                            <span class="opacity-90 font-medium text-[0.62rem] text-slate-300">${fmtPct(pctBase)} referente a base</span>
+                        </div>
+                    `;
                 }
 
                 const card = document.createElement('div');
                 card.className = `power-card ${colorClass} ${isActive ? 'active' : ''} p-2.5 flex flex-col justify-between shadow-md`;
                 card.onclick = () => selectPowerDrill(name);
                 card.innerHTML = `
-      <div>
-        <div class="flex items-center justify-between">
-          <p class="text-[0.63rem] font-bold uppercase tracking-wider opacity-90 truncate">${escHtml(name)}</p>
-          <span class="text-[0.6rem] opacity-70">${g.count}</span>
-        </div>
-        <p class="text-sm font-extrabold mt-0.5 tracking-tight">${fmtBRL(g.sum)}</p>
-      </div>
-      ${targetSection}
-    `;
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <p class="text-[0.63rem] font-bold uppercase tracking-wider opacity-90 truncate">${escHtml(name)}</p>
+                            <span class="text-[0.6rem] opacity-70">${g.count}</span>
+                        </div>
+                        <p class="text-sm font-extrabold mt-0.5 tracking-tight">${fmtBRL(g.sum)}</p>
+                    </div>
+                    ${targetSection}
+                `;
                 container.appendChild(card);
             }
         }
 
-        /* Tabela de Lançamentos (Sem coluna Status) */
+        /* Tabela de Lançamentos (Sem coluna Status + Suporte a Filtro por Local) */
         function renderTable(totalOverride, baseOverride) {
             const { total, baseEstrategica } = totalOverride !== undefined
                 ? { total: totalOverride, baseEstrategica: baseOverride }
@@ -1353,14 +1611,22 @@
             const filter = document.getElementById('search-box').value.toLowerCase();
 
             let sorted = getSorted();
+
+            // Filtro por Local se estiver ativo
+            if (activeLocalFilter) {
+                sorted = sorted.filter(r => r.local === activeLocalFilter);
+            }
+
             if (filter) {
                 sorted = sorted.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(filter)));
             }
 
             tbody.querySelectorAll('tr.data-row').forEach(el => el.remove());
             empty.style.display = sorted.length ? 'none' : '';
+
+            const filterSuffix = activeLocalFilter ? ` · Local: ${activeLocalFilter}` : '';
             document.getElementById('tbl-count').textContent = records.length
-                ? `(${sorted.length} de ${records.length})`
+                ? `(${sorted.length} de ${records.length}${filterSuffix})`
                 : '';
 
             for (const r of sorted) {
