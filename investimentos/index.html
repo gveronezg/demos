@@ -1,1 +1,1456 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
 
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carteira de Investimentos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #070b14;
+            color: #e2e8f0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Tabela */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Linha em edição */
+        tr.editing {
+            background-color: #1c1905 !important;
+        }
+
+        tr.editing td {
+            border-left: 3px solid #eab308;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #16a34a;
+            color: white;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .neg {
+            color: #f87171;
+        }
+
+        .pos {
+            color: #4ade80;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0c1220;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+
+        /* Progress bar */
+        .bar-track {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 999px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 6px;
+            border-radius: 999px;
+            transition: width 0.35s ease;
+        }
+
+        .bar-over {
+            background: #ef4444;
+        }
+
+        .bar-ok {
+            background: #22c55e;
+        }
+
+        .bar-warn {
+            background: #f59e0b;
+        }
+
+        /* Inputs e selects */
+        .input-field {
+            width: 100%;
+            font-size: 0.82rem;
+            border-radius: 0.55rem;
+            border: 1px solid #1a2438;
+            background: #0d1527;
+            color: #e2e8f0;
+            padding: 0.45rem 0.65rem;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+
+        .input-field:focus {
+            box-shadow: 0 0 0 2px #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .input-field:disabled {
+            background: #090e1a;
+            color: #475569;
+            border-color: #141c2d;
+            cursor: not-allowed;
+        }
+
+        .input-field::placeholder {
+            color: #475569;
+        }
+
+        select.input-field {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.65rem center;
+            padding-right: 1.8rem;
+            cursor: pointer;
+        }
+
+        select.input-field:disabled {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23334155' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        }
+
+        select.input-field option {
+            background: #0d1527;
+            color: #e2e8f0;
+        }
+
+        .card {
+            background: #0d1424;
+            border: 1px solid #162035;
+            border-radius: 0.85rem;
+        }
+
+        header {
+            background: #090f1d;
+            border-bottom: 1px solid #162035;
+        }
+
+        /* Cores dos cards de SuperPoderes */
+        .sp-corrente {
+            border-color: rgba(20, 184, 166, 0.3);
+            background: linear-gradient(145deg, #072a2a, #041617);
+        }
+
+        .sp-seguranca {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: linear-gradient(145deg, #062b20, #081b15);
+        }
+
+        .sp-estabilidade {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: linear-gradient(145deg, #0d254c, #091830);
+        }
+
+        .sp-diversificacao {
+            border-color: rgba(168, 85, 247, 0.3);
+            background: linear-gradient(145deg, #24123d, #140924);
+        }
+
+        .sp-valorizacao {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: linear-gradient(145deg, #360e12, #1f080a);
+        }
+
+        .sp-antifragilidade {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: linear-gradient(145deg, #382007, #201103);
+        }
+
+        .sp-previdencia {
+            border-color: rgba(6, 182, 212, 0.3);
+            background: linear-gradient(145deg, #072b33, #04161a);
+        }
+
+        .sp-satelite {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: linear-gradient(145deg, #1b1d42, #0d0e21);
+        }
+
+        .sp-default {
+            border-color: rgba(100, 116, 139, 0.3);
+            background: linear-gradient(145deg, #182130, #0d131c);
+        }
+
+        .form-label {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 3px;
+            display: block;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        /* Botões */
+        .btn-action {
+            padding: 0.45rem 1rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 0.55rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .btn-action:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #059669;
+            color: #fff;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #047857;
+        }
+
+        .btn-success:disabled {
+            background: #13222e;
+            color: #4b5d6e;
+            border: 1px solid #1a3042;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #f87171;
+            border: 1px solid #4a1515;
+        }
+
+        .btn-danger:hover {
+            background: #2b0b0b;
+        }
+
+        .btn-muted {
+            background: #151f33;
+            color: #cbd5e1;
+            border: 1px solid #202e47;
+        }
+
+        .btn-muted:hover {
+            background: #1c2a45;
+        }
+
+        table {
+            width: 100%;
+            font-size: 0.73rem;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background: #080d18;
+        }
+
+        thead th {
+            color: #8292a8;
+            font-weight: 600;
+            padding: 0.5rem 0.7rem;
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.63rem;
+            border-bottom: 1px solid #162035;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #121a2c;
+            transition: background 0.1s;
+        }
+
+        tbody tr:hover {
+            background: #0f182a;
+        }
+
+        tbody td {
+            padding: 0.45rem 0.7rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid #131d30;
+        }
+
+        /* Área dinâmica de alocação (Drill-down) */
+        .power-card {
+            border: 1px solid #1a253a;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .power-card:hover {
+            transform: translateY(-1px);
+            border-color: #2e4166;
+        }
+
+        .power-card.active {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 1px #3b82f6, 0 4px 16px rgba(59, 130, 246, 0.15);
+        }
+
+        .subpower-chip {
+            background: #09101c;
+            border: 1px solid #17243c;
+            border-radius: 0.6rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .subpower-chip:hover {
+            border-color: #2a3d61;
+            background: #0c1626;
+        }
+
+        .subpower-chip.active {
+            border-color: #60a5fa;
+            background: #0e1d35;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="toast">✓ Copiado!</div>
+
+    <!-- ══════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════════ -->
+    <header class="sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center gap-3 justify-between">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">💼</span>
+                <div>
+                    <h1 class="text-sm font-bold text-white tracking-wide">Carteira de Investimentos</h1>
+                    <p class="text-[0.68rem] text-slate-500">100% Stateless · Alvos Estratégicos Base 100%</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
+                <div class="text-right">
+                    <p class="text-[0.62rem] uppercase tracking-wider text-slate-400">Total Carteira</p>
+                    <p id="hdr-total" class="text-xl font-extrabold text-white">R$ 0,00</p>
+                </div>
+                <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
+                    <p class="text-[0.62rem] uppercase tracking-wider text-blue-400">Base 100%</p>
+                    <p id="hdr-base" class="text-lg font-bold text-blue-300">R$ 0,00</p>
+                </div>
+                <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
+                    <p class="text-[0.62rem] uppercase tracking-wider text-emerald-400">Total Bruto</p>
+                    <p id="hdr-bruto" class="text-base font-bold text-emerald-400">R$ 0,00</p>
+                </div>
+                <div class="text-right border-l border-slate-800 pl-3 sm:pl-5">
+                    <p class="text-[0.62rem] uppercase tracking-wider text-slate-400">Lançamentos</p>
+                    <p id="hdr-count" class="text-base font-bold text-slate-300">0</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-4 space-y-4">
+
+        <!-- ══════════════════════════════════════════════════════
+       1 · ENTRADA E SAÍDA DE RELATÓRIO COMPACTAS (POUCO ESPAÇO)
+  ══════════════════════════════════════════════════════════ -->
+        <section class="card p-3">
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+
+                <!-- Entrada CSV Compacta (Textarea preserva quebras de linha \n) -->
+                <div class="flex-1 flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">📥 Importar:</span>
+                    <textarea id="csv-input" rows="1" placeholder="Cole seu CSV (separado por ;) aqui..."
+                        class="input-field text-xs font-mono py-1.5 h-9 resize-none whitespace-nowrap overflow-x-auto"></textarea>
+                    <button class="btn-action btn-primary text-xs py-1.5 px-3" onclick="importCSV()">
+                        Abrir
+                    </button>
+                    <button class="btn-action btn-danger text-xs py-1.5 px-2.5" onclick="confirmClear()"
+                        title="Limpar todos os dados">
+                        🗑
+                    </button>
+                </div>
+
+                <!-- Divisor vertical no desktop -->
+                <div class="hidden lg:block w-[1px] h-6 bg-slate-800"></div>
+
+                <!-- Saída CSV Compacta (Textarea preserva quebras de linha \n) -->
+                <div class="flex-1 flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">📤 Exportar:</span>
+                    <textarea id="csv-output" rows="1" readonly
+                        placeholder="Clique em 'Gerar CSV' para obter o relatório..."
+                        class="input-field text-xs font-mono py-1.5 h-9 resize-none whitespace-nowrap overflow-x-auto text-slate-400"></textarea>
+                    <button class="btn-action btn-muted text-xs py-1.5 px-3" onclick="generateReport()">
+                        Gerar CSV
+                    </button>
+                    <button id="btn-copy" class="btn-action btn-success text-xs py-1.5 px-3 hidden"
+                        onclick="copyReport()">
+                        Copiar
+                    </button>
+                </div>
+
+            </div>
+            <span id="import-msg" class="text-xs hidden font-medium mt-1.5 block"></span>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════
+       2 · ALOCAÇÃO DINÂMICA COM DRILL-DOWN INTERATIVO POR CLIQUES
+  ══════════════════════════════════════════════════════════ -->
+        <section class="card p-4 space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span>⚡</span> Alocação Interativa por Poderes
+                    </h2>
+                    <p class="text-[0.68rem] text-slate-500">
+                        Clique em qualquer SuperPoder para expandir seus SubPoderes e ativos correspondentes.
+                    </p>
+                </div>
+                <div id="drill-status" class="text-[0.68rem] text-blue-400 font-medium"></div>
+            </div>
+
+            <!-- Nível 1: Cards dos SuperPoderes -->
+            <div id="cards-container" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+                <div id="cards-empty"
+                    class="col-span-full text-center text-xs py-6 border border-dashed border-slate-800 rounded-lg text-slate-500">
+                    Nenhum registro carregado. Cole um CSV acima ou adicione um lançamento abaixo.
+                </div>
+            </div>
+
+            <!-- Nível 2 e 3: Painel Expandido ao Clicar (SubPoderes & Detalhes Aprofundados) -->
+            <div id="drill-panel"
+                class="hidden fade-in bg-[#080d19] border border-blue-950/60 rounded-xl p-3.5 space-y-3 mt-2">
+                <div class="flex items-center justify-between border-b border-slate-800/80 pb-2 flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <span id="drill-icon" class="text-base">🔍</span>
+                        <span id="drill-title" class="text-xs font-bold text-white uppercase tracking-wider"></span>
+                        <span id="drill-badge-base"
+                            class="text-[0.68rem] px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 font-semibold border border-blue-800/40"></span>
+                        <span id="drill-badge-alvo"
+                            class="text-[0.68rem] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium"></span>
+                    </div>
+                    <button onclick="closeDrillDown()"
+                        class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded bg-slate-900 border border-slate-800">
+                        ✕ Fechar Detalhes
+                    </button>
+                </div>
+
+                <!-- SubPoderes em Chips Clicáveis -->
+                <div>
+                    <p class="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                        SubPoderes (clique para filtrar ativos específicos):
+                    </p>
+                    <div id="drill-subpowers" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Tabela Aprofundada dos Ativos desse Poder/Subpoder -->
+                <div class="overflow-x-auto rounded-lg border border-slate-800/80 max-h-56 overflow-y-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#0b1222] text-slate-400 text-[0.62rem] uppercase">
+                            <tr>
+                                <th class="py-1.5 px-3">SubPoder</th>
+                                <th class="py-1.5 px-3">Local</th>
+                                <th class="py-1.5 px-3">CNPJ / ID</th>
+                                <th class="py-1.5 px-3">Nome do Ativo</th>
+                                <th class="py-1.5 px-3 text-right">Valor</th>
+                                <th class="py-1.5 px-3 text-right">Percentual</th>
+                                <th class="py-1.5 px-3">Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drill-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════
+       3 · FORMULÁRIO DE LANÇAMENTO (Validação para habilitar botão)
+  ══════════════════════════════════════════════════════════ -->
+        <section class="card p-4">
+            <div class="flex items-center justify-between mb-3">
+                <span id="form-title" class="font-bold text-xs uppercase tracking-wider text-slate-200">➕ Novo
+                    Lançamento</span>
+                <button id="btn-cancel-edit" onclick="cancelEdit()"
+                    class="hidden text-xs text-red-400 hover:text-red-300 underline font-medium">✕ Cancelar
+                    Edição</button>
+            </div>
+
+            <!-- Datalists de Autocomplete -->
+            <datalist id="dl-cnpj"></datalist>
+            <datalist id="dl-nome"></datalist>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+
+                <!-- 1. SuperPoderes -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-super">SuperPoderes *</label>
+                    <select id="f-super" class="input-field" onchange="onSuperChange()">
+                        <option value="">— Selecione —</option>
+                        <option value="CORRENTE">CORRENTE</option>
+                        <option value="SEGURANÇA">SEGURANÇA</option>
+                        <option value="ESTABILIDADE">ESTABILIDADE</option>
+                        <option value="DIVERSIFICAÇÃO">DIVERSIFICAÇÃO</option>
+                        <option value="VALORIZAÇÃO">VALORIZAÇÃO</option>
+                        <option value="ANTIFRAGILIDADE">ANTIFRAGILIDADE</option>
+                        <option value="PREVIDÊNCIA">PREVIDÊNCIA</option>
+                        <option value="SATÉLITE">SATÉLITE</option>
+                    </select>
+                </div>
+
+                <!-- 2. SubPoderes (Dependente) -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-sub">SubPoderes *</label>
+                    <select id="f-sub" class="input-field" disabled onchange="validateForm()">
+                        <option value="">— Escolha SuperPoder 1º —</option>
+                    </select>
+                </div>
+
+                <!-- 3. Local -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-local">Local *</label>
+                    <select id="f-local" class="input-field" onchange="validateForm()">
+                        <option value="">— Selecione —</option>
+                        <option value="XP">XP</option>
+                        <option value="BTG">BTG</option>
+                        <option value="Digital">Digital</option>
+                    </select>
+                </div>
+
+                <!-- 4. CNPJ / Identificador -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-cnpj">CNPJ / ID *</label>
+                    <input id="f-cnpj" list="dl-cnpj" class="input-field" placeholder="ex: 45278833000157"
+                        oninput="validateForm()" />
+                </div>
+
+                <!-- 5. Nome do Ativo -->
+                <div class="flex flex-col col-span-2 sm:col-span-1">
+                    <label class="form-label" for="f-nome">Nome do Ativo *</label>
+                    <input id="f-nome" list="dl-nome" class="input-field" placeholder="ex: trend di fic rf"
+                        oninput="validateForm()" />
+                </div>
+
+                <!-- 6. Valor -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-valor">Valor R$ * <span
+                            class="text-slate-500 font-normal lowercase">(neg=resgate)</span></label>
+                    <input id="f-valor" class="input-field" placeholder="ex: 1500.50 ou -300"
+                        oninput="validateForm()" />
+                </div>
+
+                <!-- 7. Data -->
+                <div class="flex flex-col">
+                    <label class="form-label" for="f-data">Data (DD/MM/AAAA) *</label>
+                    <input id="f-data" class="input-field" placeholder="ex: 26/11/2026" oninput="validateForm()" />
+                </div>
+
+            </div>
+
+            <div class="mt-3 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex gap-2 items-center">
+                    <!-- Botão desabilitado até que todos os dados estejam preenchidos -->
+                    <button id="btn-add" class="btn-action btn-success" disabled onclick="submitForm()">
+                        ✚ Adicionar Lançamento
+                    </button>
+                    <button class="btn-action btn-muted" onclick="clearForm()">
+                        Limpar Campos
+                    </button>
+                </div>
+                <p id="form-validation-hint" class="text-[0.68rem] text-slate-500 italic">
+                    * Preencha todos os campos obrigatórios para habilitar a inclusão.
+                </p>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════
+       4 · TABELA DE LANÇAMENTOS E CONSOLIDAÇÃO
+  ══════════════════════════════════════════════════════════ -->
+        <section class="card">
+            <div class="px-4 py-2.5 flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/80">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs uppercase tracking-wider text-slate-200">📋 Lançamentos</span>
+                    <span id="tbl-count" class="text-xs text-slate-500"></span>
+                </div>
+                <input id="search-box" oninput="renderTable()" placeholder="🔍 Filtrar registros..." class="input-field"
+                    style="width:180px;font-size:0.75rem;padding:0.35rem 0.55rem" />
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortBy('super')" class="cursor-pointer hover:text-blue-400">SuperPoder ↕</th>
+                            <th onclick="sortBy('sub')" class="cursor-pointer hover:text-blue-400">SubPoder ↕</th>
+                            <th>Local</th>
+                            <th>CNPJ/ID</th>
+                            <th onclick="sortBy('nome')" class="cursor-pointer hover:text-blue-400">Nome ↕</th>
+                            <th onclick="sortBy('valor')" class="cursor-pointer hover:text-blue-400 text-right">Valor ↕
+                            </th>
+                            <th class="text-right">% Carteira</th>
+                            <th class="text-right">% Base 100%</th>
+                            <th>Data</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-body">
+                        <tr id="tbl-empty">
+                            <td colspan="10" style="text-align:center;color:#475569;padding:3rem 1rem">
+                                Nenhum lançamento registrado.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center text-[0.65rem] pb-4 text-slate-600">
+            Aplicação 100% Client-Side · GitHub Pages Ready · Zero Cookies
+        </footer>
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════ -->
+    <script>
+        /* ═══════════════════════════════════════
+           ESTADO DA APLICAÇÃO
+        ═══════════════════════════════════════ */
+        let records = [];
+        let nextId = 1;
+        let editingId = null;
+        let sortKey = null;
+        let sortAsc = true;
+
+        /* Estado da exploração de alocação (Drill-down) */
+        let activePowerFilter = null;
+        let activeSubPowerFilter = null;
+
+        /* Mapeamento hierárquico SuperPoderes -> SubPoderes */
+        const SUBPODERES_MAP = {
+            'CORRENTE': ['Caixa', 'Á Receber'],
+            'SEGURANÇA': ['Taxa Zero', 'Euros'],
+            'ESTABILIDADE': ['Baunilha'],
+            'DIVERSIFICAÇÃO': ['Infraestrutura', 'Viés Global', 'Ex-Tesoureiros'],
+            'VALORIZAÇÃO': ['Viés Comprado', 'Qualidade', 'Perfil Global'],
+            'ANTIFRAGILIDADE': ['Dólar', 'Ouro'],
+            'PREVIDÊNCIA': ['Tesouros'],
+            'SATÉLITE': ['Cripto']
+        };
+
+        /* Alvos predefinidos (Base 100% = Estabilidade + Diversificação + Valorização + Antifragilidade) */
+        const ALVOS_MAP = {
+            'CORRENTE': null,
+            'ESTABILIDADE': 22.5,
+            'DIVERSIFICAÇÃO': 40.0,
+            'VALORIZAÇÃO': 30.0,
+            'ANTIFRAGILIDADE': 7.5,
+            'SEGURANÇA': null,
+            'PREVIDÊNCIA': null,
+            'SATÉLITE': null
+        };
+
+        const CATEGORIAS_BASE_ESTRATEGICA = ['ESTABILIDADE', 'DIVERSIFICAÇÃO', 'VALORIZAÇÃO', 'ANTIFRAGILIDADE'];
+
+        /* ═══════════════════════════════════════
+           UTILITÁRIOS
+        ═══════════════════════════════════════ */
+        function getTodayBR() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const y = now.getFullYear();
+            return `${d}/${m}/${y}`;
+        }
+
+        function parseNum(s) {
+            if (s === null || s === undefined) return NaN;
+            s = String(s).trim().replace(/R\$\s*/g, '').replace(/%/g, '').trim();
+            if (!s) return NaN;
+            const hasDot = s.includes('.');
+            const hasComma = s.includes(',');
+            if (hasComma && hasDot) {
+                if (s.lastIndexOf(',') > s.lastIndexOf('.')) {
+                    s = s.replace(/\./g, '').replace(',', '.');
+                } else {
+                    s = s.replace(/,/g, '');
+                }
+            } else if (hasComma) {
+                s = s.replace(',', '.');
+            }
+            return parseFloat(s);
+        }
+
+        function fmtBRL(n) {
+            if (isNaN(n)) return '—';
+            return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function fmtPct(n) {
+            if (isNaN(n) || !isFinite(n)) return '—';
+            return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+        }
+
+        function csvEscape(v) {
+            v = String(v === null || v === undefined ? '' : v);
+            if (v.includes(';') || v.includes('"') || v.includes('\n')) {
+                return '"' + v.replace(/"/g, '""') + '"';
+            }
+            return v;
+        }
+
+        function csvSplit(line) {
+            const result = []; let cur = '', inQ = false;
+            for (let i = 0; i < line.length; i++) {
+                const c = line[i];
+                if (c === '"') {
+                    if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+                    else inQ = !inQ;
+                } else if (c === ';' && !inQ) {
+                    result.push(cur.trim()); cur = '';
+                } else { cur += c; }
+            }
+            result.push(cur.trim());
+            return result;
+        }
+
+        function escHtml(s) {
+            return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function escAttr(s) {
+            return String(s ?? '').replace(/"/g, '&quot;');
+        }
+
+        function calcTotals() {
+            const total = records.reduce((s, r) => s + r.valor, 0);
+            const bruto = records.filter(r => r.valor > 0).reduce((s, r) => s + r.valor, 0);
+            const baseEstrategica = records
+                .filter(r => CATEGORIAS_BASE_ESTRATEGICA.includes(r.super))
+                .reduce((s, r) => s + r.valor, 0);
+
+            return { total, bruto, baseEstrategica };
+        }
+
+        /* ═══════════════════════════════════════
+           VALIDAÇÃO DO FORMULÁRIO (Botão Ativo)
+        ═══════════════════════════════════════ */
+        function validateForm() {
+            const superVal = document.getElementById('f-super').value.trim();
+            const subVal = document.getElementById('f-sub').value.trim();
+            const localVal = document.getElementById('f-local').value.trim();
+            const cnpjVal = document.getElementById('f-cnpj').value.trim();
+            const nomeVal = document.getElementById('f-nome').value.trim();
+            const valorVal = parseNum(document.getElementById('f-valor').value);
+            const dataVal = document.getElementById('f-data').value.trim();
+
+            const isValid = Boolean(
+                superVal &&
+                subVal &&
+                localVal &&
+                cnpjVal &&
+                nomeVal &&
+                !isNaN(valorVal) &&
+                dataVal
+            );
+
+            const btnAdd = document.getElementById('btn-add');
+            const hintEl = document.getElementById('form-validation-hint');
+
+            btnAdd.disabled = !isValid;
+            if (isValid) {
+                hintEl.textContent = '✓ Todos os dados preenchidos. Pronto para adicionar!';
+                hintEl.className = 'text-[0.68rem] text-emerald-400 font-medium';
+            } else {
+                hintEl.textContent = '* Preencha todos os campos obrigatórios para habilitar a inclusão.';
+                hintEl.className = 'text-[0.68rem] text-slate-500 italic';
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           SUBPODERES DEPENDENTES
+        ═══════════════════════════════════════ */
+        function onSuperChange(selectedSub = null) {
+            const superVal = document.getElementById('f-super').value;
+            const subSelect = document.getElementById('f-sub');
+
+            if (!superVal || !SUBPODERES_MAP[superVal]) {
+                subSelect.disabled = true;
+                subSelect.innerHTML = '<option value="">— Escolha SuperPoder 1º —</option>';
+                validateForm();
+                return;
+            }
+
+            subSelect.disabled = false;
+            const allowedSubs = SUBPODERES_MAP[superVal] || [];
+
+            subSelect.innerHTML = '<option value="">— Selecione o SubPoder —</option>' +
+                allowedSubs.map(sub => `<option value="${escAttr(sub)}">${escHtml(sub)}</option>`).join('');
+
+            if (selectedSub && allowedSubs.includes(selectedSub)) {
+                subSelect.value = selectedSub;
+            } else if (selectedSub) {
+                const customOpt = document.createElement('option');
+                customOpt.value = selectedSub;
+                customOpt.textContent = selectedSub;
+                customOpt.selected = true;
+                subSelect.appendChild(customOpt);
+            }
+
+            validateForm();
+        }
+
+        function updateDataLists() {
+            const cnpjs = [...new Set(records.map(r => r.cnpj).filter(Boolean))];
+            const nomes = [...new Set(records.map(r => r.nome).filter(Boolean))];
+
+            document.getElementById('dl-cnpj').innerHTML = cnpjs.map(v => `<option value="${escAttr(v)}">`).join('');
+            document.getElementById('dl-nome').innerHTML = nomes.map(v => `<option value="${escAttr(v)}">`).join('');
+        }
+
+        /* ═══════════════════════════════════════
+           IMPORTAÇÃO CSV COMPACTA (Resiliente a quebras ausentes e cabeçalhos opcionais)
+        ═══════════════════════════════════════ */
+        function importCSV() {
+            const inputEl = document.getElementById('csv-input');
+            let raw = inputEl.value.trim();
+            if (!raw) { showMsg('Cole o conteúdo CSV no campo ao lado.', true); return; }
+
+            // Se o texto colado NÃO tiver quebras de linha (ex: colado de fonte sem quebras),
+            // separamos apenas quando uma data ou o cabeçalho 'Data' estiver colado diretamente no início de um SuperPoder
+            if (!raw.includes('\n') && !raw.includes('\r')) {
+                const knownPowers = Object.keys(SUBPODERES_MAP).join('|');
+                const re = new RegExp(`(\\d{2}\\/\\d{2}\\/\\d{4}|xx\\/[^;\\/]+\\/\\d{4}|Data)(${knownPowers};)`, 'gi');
+                raw = raw.replace(re, '$1\n$2');
+            }
+
+            const lines = raw.split(/\r?\n/).filter(l => l.trim());
+            if (lines.length === 0) { showMsg('Conteúdo CSV vazio.', true); return; }
+
+            // Detecta se a primeira linha já são dados (sem linha de cabeçalho)
+            const firstLineCols = csvSplit(lines[0]);
+            const firstColUpper = (firstLineCols[0] || '').toUpperCase().trim();
+            const isFirstLineData = Object.keys(SUBPODERES_MAP).includes(firstColUpper);
+
+            let startLine = 1;
+            let idxMap = {
+                super: 0, sub: 1, local: 2, cnpj: 3, nome: 4, valor: 5, alvo: 6, data: 7
+            };
+
+            if (!isFirstLineData) {
+                // Primeira linha é cabeçalho: mapeia colunas dinamicamente
+                startLine = 1;
+                const header = firstLineCols.map(h => h.toLowerCase().replace(/[^a-záéíóúãõüç]/gi, '').trim());
+
+                const colMap = {
+                    super: ['superpoderes', 'superpoder', 'super', 'grupo'],
+                    sub: ['subpoderes', 'subpoder', 'sub', 'tipo'],
+                    local: ['local', 'instituicao', 'corretora'],
+                    cnpj: ['cnpj', 'id', 'identificador', 'codigo'],
+                    nome: ['nome', 'ativo', 'descricao', 'descrição'],
+                    valor: ['valor', 'saldo', 'montante', 'value'],
+                    alvo: ['alvo', 'meta', 'percentualalvo', 'target'],
+                    data: ['data', 'date'],
+                };
+
+                function findCol(key) {
+                    for (const c of colMap[key]) {
+                        const idx = header.findIndex(h => h === c || h.startsWith(c));
+                        if (idx !== -1) return idx;
+                    }
+                    return -1;
+                }
+
+                for (const k of Object.keys(colMap)) {
+                    const found = findCol(k);
+                    if (found !== -1) idxMap[k] = found;
+                }
+            } else {
+                // Primeira linha já são dados diretos
+                startLine = 0;
+            }
+
+            let imported = 0;
+            let skipped = 0;
+            const newRecs = [];
+
+            for (let i = startLine; i < lines.length; i++) {
+                const cols = csvSplit(lines[i]);
+                if (cols.every(c => !c)) continue;
+
+                const get = k => idxMap[k] !== -1 && idxMap[k] !== undefined ? (cols[idxMap[k]] || '').trim() : '';
+                const valorRaw = get('valor');
+                const valorNum = parseNum(valorRaw);
+
+                if (isNaN(valorNum) && valorRaw !== '') {
+                    skipped++;
+                    continue;
+                }
+
+                const superVal = get('super').toUpperCase();
+                const parsedAlvo = parseNum(get('alvo'));
+                const finalAlvo = !isNaN(parsedAlvo) ? parsedAlvo : (ALVOS_MAP[superVal] !== undefined ? ALVOS_MAP[superVal] : null);
+
+                newRecs.push({
+                    id: nextId++,
+                    super: superVal,
+                    sub: get('sub'),
+                    local: get('local'),
+                    cnpj: get('cnpj'),
+                    nome: get('nome'),
+                    valor: isNaN(valorNum) ? 0 : valorNum,
+                    alvo: finalAlvo,
+                    data: get('data') || getTodayBR(),
+                });
+                imported++;
+            }
+
+            records = newRecs;
+            nextId = records.length ? Math.max(...records.map(r => r.id)) + 1 : 1;
+            inputEl.value = '';
+
+            updateDataLists();
+            renderAll();
+            showMsg(`✓ ${imported} lançamentos importados com sucesso!${skipped ? ` (${skipped} ignorados por valor inválido)` : ''}`);
+        }
+
+        function showMsg(txt, isErr = false) {
+            const el = document.getElementById('import-msg');
+            el.textContent = txt;
+            el.className = `text-xs font-semibold ${isErr ? 'text-red-400' : 'text-emerald-400'} mt-1.5 block`;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 4500);
+        }
+
+        /* ═══════════════════════════════════════
+           FORMULÁRIO CRUD
+        ═══════════════════════════════════════ */
+        function submitForm() {
+            const superVal = document.getElementById('f-super').value;
+            const subVal = document.getElementById('f-sub').value;
+            const localVal = document.getElementById('f-local').value;
+            const cnpjVal = document.getElementById('f-cnpj').value.trim();
+            const nomeVal = document.getElementById('f-nome').value.trim();
+            const valorNum = parseNum(document.getElementById('f-valor').value);
+            const dataVal = document.getElementById('f-data').value.trim() || getTodayBR();
+
+            if (!superVal || !subVal || !localVal || !cnpjVal || !nomeVal || isNaN(valorNum) || !dataVal) {
+                alert('Preencha todos os campos corretamente.');
+                return;
+            }
+
+            const alvoVal = ALVOS_MAP[superVal] !== undefined ? ALVOS_MAP[superVal] : null;
+
+            const rec = {
+                super: superVal,
+                sub: subVal,
+                local: localVal,
+                cnpj: cnpjVal,
+                nome: nomeVal,
+                valor: valorNum,
+                alvo: alvoVal,
+                data: dataVal,
+            };
+
+            if (editingId !== null) {
+                const idx = records.findIndex(r => r.id === editingId);
+                if (idx !== -1) records[idx] = { ...records[idx], ...rec };
+                cancelEdit();
+            } else {
+                records.push({ id: nextId++, ...rec });
+                clearForm();
+            }
+
+            updateDataLists();
+            renderAll();
+        }
+
+        function clearForm() {
+            document.getElementById('f-super').value = '';
+            onSuperChange();
+            document.getElementById('f-local').value = '';
+            document.getElementById('f-cnpj').value = '';
+            document.getElementById('f-nome').value = '';
+            document.getElementById('f-valor').value = '';
+            document.getElementById('f-data').value = getTodayBR();
+            validateForm();
+        }
+
+        function editRecord(id) {
+            const r = records.find(r => r.id === id);
+            if (!r) return;
+            editingId = id;
+
+            document.getElementById('f-super').value = r.super;
+            onSuperChange(r.sub);
+
+            document.getElementById('f-local').value = r.local;
+            document.getElementById('f-cnpj').value = r.cnpj;
+            document.getElementById('f-nome').value = r.nome;
+            document.getElementById('f-valor').value = isNaN(r.valor) ? '' : String(r.valor).replace('.', ',');
+            document.getElementById('f-data').value = r.data || getTodayBR();
+
+            document.getElementById('form-title').textContent = '✏️ Editando Lançamento';
+            document.getElementById('btn-add').textContent = '💾 Salvar Alteração';
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+
+            validateForm();
+            document.querySelector('section:nth-of-type(3)').scrollIntoView({ behavior: 'smooth' });
+            renderTable();
+        }
+
+        function cancelEdit() {
+            editingId = null;
+            clearForm();
+            document.getElementById('form-title').textContent = '➕ Novo Lançamento';
+            document.getElementById('btn-add').textContent = '✚ Adicionar Lançamento';
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            renderTable();
+        }
+
+        function deleteRecord(id) {
+            if (!confirm('Deseja realmente excluir este lançamento?')) return;
+            records = records.filter(r => r.id !== id);
+            if (editingId === id) cancelEdit();
+            updateDataLists();
+            renderAll();
+        }
+
+        function confirmClear() {
+            if (!records.length) { alert('Não há registros para limpar.'); return; }
+            if (!confirm(`Tem certeza que deseja apagar todos os ${records.length} lançamentos?`)) return;
+            records = [];
+            nextId = 1;
+            activePowerFilter = null;
+            activeSubPowerFilter = null;
+            cancelEdit();
+            updateDataLists();
+            renderAll();
+        }
+
+        /* ═══════════════════════════════════════
+           ORDENAÇÃO
+        ═══════════════════════════════════════ */
+        function sortBy(key) {
+            if (sortKey === key) sortAsc = !sortAsc;
+            else { sortKey = key; sortAsc = true; }
+            renderTable();
+        }
+
+        function getSorted() {
+            if (!sortKey) return [...records];
+            return [...records].sort((a, b) => {
+                let av = a[sortKey], bv = b[sortKey];
+                if (typeof av === 'number') return sortAsc ? av - bv : bv - av;
+                return sortAsc
+                    ? String(av || '').localeCompare(String(bv || ''), 'pt-BR')
+                    : String(bv || '').localeCompare(String(av || ''), 'pt-BR');
+            });
+        }
+
+        /* ═══════════════════════════════════════
+           DRILL-DOWN INTERATIVO POR CLIQUES
+        ═══════════════════════════════════════ */
+        function selectPowerDrill(powerName) {
+            if (activePowerFilter === powerName) {
+                closeDrillDown();
+                return;
+            }
+            activePowerFilter = powerName;
+            activeSubPowerFilter = null;
+            renderDrillPanel();
+            renderCards();
+        }
+
+        function selectSubPowerDrill(subName) {
+            if (activeSubPowerFilter === subName) {
+                activeSubPowerFilter = null; // Toggle off
+            } else {
+                activeSubPowerFilter = subName;
+            }
+            renderDrillPanel();
+        }
+
+        function closeDrillDown() {
+            activePowerFilter = null;
+            activeSubPowerFilter = null;
+            document.getElementById('drill-panel').classList.add('hidden');
+            renderCards();
+        }
+
+        function renderDrillPanel() {
+            const panel = document.getElementById('drill-panel');
+            if (!activePowerFilter) {
+                panel.classList.add('hidden');
+                return;
+            }
+
+            const { total, baseEstrategica } = calcTotals();
+            const powerRecs = records.filter(r => r.super === activePowerFilter);
+            const powerSum = powerRecs.reduce((s, r) => s + r.valor, 0);
+            const pctBase = baseEstrategica > 0 ? (powerSum / baseEstrategica) * 100 : 0;
+            const alvoDef = ALVOS_MAP[activePowerFilter];
+
+            panel.classList.remove('hidden');
+
+            document.getElementById('drill-title').textContent = activePowerFilter;
+            document.getElementById('drill-badge-base').textContent = `${fmtBRL(powerSum)} (${fmtPct(pctBase)} da Base 100%)`;
+
+            const badgeAlvo = document.getElementById('drill-badge-alvo');
+            if (alvoDef !== null && alvoDef !== undefined) {
+                const diff = pctBase - alvoDef;
+                badgeAlvo.textContent = `Alvo: ${fmtPct(alvoDef)} | Dif: ${diff >= 0 ? '+' : ''}${fmtPct(diff)}`;
+                badgeAlvo.className = `text-[0.68rem] px-2 py-0.5 rounded-full font-semibold border ${diff > 1 ? 'bg-red-950/80 text-red-300 border-red-800/40' : diff < -1 ? 'bg-amber-950/80 text-amber-300 border-amber-800/40' : 'bg-emerald-950/80 text-emerald-300 border-emerald-800/40'}`;
+            } else {
+                badgeAlvo.textContent = 'Referente à base';
+                badgeAlvo.className = 'text-[0.68rem] px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 font-medium border border-slate-800';
+            }
+
+            // Agrupamento de SubPoderes
+            const subGroup = {};
+            for (const r of powerRecs) {
+                const sub = r.sub || '(Sem SubPoder)';
+                if (!subGroup[sub]) subGroup[sub] = { sum: 0, count: 0 };
+                subGroup[sub].sum += r.valor;
+                subGroup[sub].count++;
+            }
+
+            const subChipsContainer = document.getElementById('drill-subpowers');
+            subChipsContainer.innerHTML = '';
+
+            // Opção "Todos"
+            const allChip = document.createElement('div');
+            allChip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 ${!activeSubPowerFilter ? 'active font-bold text-blue-300' : 'text-slate-400'}`;
+            allChip.innerHTML = `<span>Todos os SubPoderes</span> <span class="text-[0.62rem] opacity-70">(${powerRecs.length})</span>`;
+            allChip.onclick = () => selectSubPowerDrill(null);
+            subChipsContainer.appendChild(allChip);
+
+            for (const [subName, sg] of Object.entries(subGroup)) {
+                const isAct = activeSubPowerFilter === subName;
+                const pctDoPoder = powerSum !== 0 ? (sg.sum / powerSum) * 100 : 0;
+                const chip = document.createElement('div');
+                chip.className = `subpower-chip px-2.5 py-1 text-xs font-medium flex items-center gap-2 ${isAct ? 'active font-bold text-blue-300' : 'text-slate-300'}`;
+                chip.innerHTML = `
+      <span>${escHtml(subName)}</span>
+      <span class="text-[0.68rem] font-semibold text-slate-400">${fmtBRL(sg.sum)}</span>
+      <span class="text-[0.62rem] opacity-60">(${fmtPct(pctDoPoder)})</span>
+    `;
+                chip.onclick = () => selectSubPowerDrill(subName);
+                subChipsContainer.appendChild(chip);
+            }
+
+            // Tabela filtrada
+            let filteredTableRecs = powerRecs;
+            if (activeSubPowerFilter) {
+                filteredTableRecs = filteredTableRecs.filter(r => r.sub === activeSubPowerFilter);
+            }
+
+            const drillTbody = document.getElementById('drill-table-body');
+            drillTbody.innerHTML = '';
+
+            if (!filteredTableRecs.length) {
+                drillTbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-slate-500">Nenhum ativo encontrado para esta seleção.</td></tr>';
+            } else {
+                for (const r of filteredTableRecs) {
+                    const pctPoderLinha = powerSum !== 0 ? (r.valor / powerSum) * 100 : 0;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+        <td class="py-1.5 px-3 text-slate-300 font-medium">${escHtml(r.sub)}</td>
+        <td class="py-1.5 px-3 text-slate-400">${escHtml(r.local)}</td>
+        <td class="py-1.5 px-3 font-mono text-[0.68rem] text-slate-400">${escHtml(r.cnpj)}</td>
+        <td class="py-1.5 px-3 text-white font-medium">${escHtml(r.nome)}</td>
+        <td class="py-1.5 px-3 text-right font-semibold ${r.valor < 0 ? 'neg' : 'pos'}">${fmtBRL(r.valor)}</td>
+        <td class="py-1.5 px-3 text-right text-slate-400">${fmtPct(pctPoderLinha)}</td>
+        <td class="py-1.5 px-3 text-slate-400">${escHtml(r.data)}</td>
+      `;
+                    drillTbody.appendChild(tr);
+                }
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           RENDERIZAÇÃO GERAL
+        ═══════════════════════════════════════ */
+        function renderAll() {
+            const { total, bruto, baseEstrategica } = calcTotals();
+            document.getElementById('hdr-total').textContent = fmtBRL(total);
+            document.getElementById('hdr-base').textContent = fmtBRL(baseEstrategica);
+            document.getElementById('hdr-bruto').textContent = fmtBRL(bruto);
+            document.getElementById('hdr-count').textContent = records.length;
+
+            renderCards(total, baseEstrategica);
+            renderTable(total, baseEstrategica);
+            if (activePowerFilter) renderDrillPanel();
+        }
+
+        function getSuperPoderColorClass(sp) {
+            const norm = (sp || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            if (norm.includes('CORRENTE')) return 'sp-corrente';
+            if (norm.includes('SEGURANCA')) return 'sp-seguranca';
+            if (norm.includes('ESTABILIDADE')) return 'sp-estabilidade';
+            if (norm.includes('DIVERSIFICACAO')) return 'sp-diversificacao';
+            if (norm.includes('VALORIZACAO')) return 'sp-valorizacao';
+            if (norm.includes('ANTIFRAGILIDADE')) return 'sp-antifragilidade';
+            if (norm.includes('PREVIDENCIA')) return 'sp-previdencia';
+            if (norm.includes('SATELITE')) return 'sp-satelite';
+            return 'sp-default';
+        }
+
+        /* Cards SuperPoderes Clicáveis para Drill-down */
+        function renderCards(totalOverride, baseOverride) {
+            const { total, baseEstrategica } = totalOverride !== undefined
+                ? { total: totalOverride, baseEstrategica: baseOverride }
+                : calcTotals();
+
+            const container = document.getElementById('cards-container');
+            const empty = document.getElementById('cards-empty');
+            container.querySelectorAll('.power-card').forEach(el => el.remove());
+
+            if (!records.length) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            const groups = {};
+            for (const r of records) {
+                const k = r.super || '(Sem Categoria)';
+                if (!groups[k]) groups[k] = { sum: 0, count: 0 };
+                groups[k].sum += r.valor;
+                groups[k].count++;
+            }
+
+            const orderedKeys = Object.keys(SUBPODERES_MAP);
+            const presentKeys = Object.keys(groups);
+            const allKeys = [...orderedKeys, ...presentKeys.filter(k => !orderedKeys.includes(k))];
+
+            for (const name of allKeys) {
+                const g = groups[name] || { sum: 0, count: 0 };
+                if (!groups[name] && !records.some(r => r.super === name)) continue;
+
+                const colorClass = getSuperPoderColorClass(name);
+                const alvoDef = ALVOS_MAP[name];
+                const pctBase = baseEstrategica > 0 ? (g.sum / baseEstrategica) * 100 : 0;
+                const isActive = activePowerFilter === name;
+
+                let targetSection = '';
+                if (alvoDef !== null && alvoDef !== undefined) {
+                    const diff = pctBase - alvoDef;
+                    const barW = Math.min(100, Math.max(0, (pctBase / alvoDef) * 100));
+                    const barCls = diff > 1.0 ? 'bar-over' : diff < -1.0 ? 'bar-warn' : 'bar-ok';
+                    const diffLabel = diff > 0.05
+                        ? `<span class="text-amber-300 font-bold">+${fmtPct(diff)}</span>`
+                        : diff < -0.05
+                            ? `<span class="text-orange-300 font-bold">${fmtPct(diff)}</span>`
+                            : `<span class="text-emerald-300 font-bold">✓</span>`;
+
+                    targetSection = `
+        <div class="mt-1.5 pt-1.5 border-t border-white/10 space-y-1">
+          <div class="flex justify-between items-center text-[0.62rem]">
+            <span class="opacity-80">Alvo: <b>${fmtPct(alvoDef)}</b></span>
+            ${diffLabel}
+          </div>
+          <div class="bar-track w-full"><div class="bar-fill ${barCls}" style="width:${barW}%"></div></div>
+          <div class="text-[0.62rem] opacity-75 text-right font-medium">${fmtPct(pctBase)} base</div>
+        </div>
+      `;
+                } else {
+                    targetSection = `
+        <div class="mt-1.5 pt-1.5 border-t border-white/10 text-right">
+          <span class="opacity-90 font-medium text-[0.62rem] text-slate-300">${fmtPct(pctBase)} referente a base</span>
+        </div>
+      `;
+                }
+
+                const card = document.createElement('div');
+                card.className = `power-card ${colorClass} ${isActive ? 'active' : ''} p-2.5 flex flex-col justify-between shadow-md`;
+                card.onclick = () => selectPowerDrill(name);
+                card.innerHTML = `
+      <div>
+        <div class="flex items-center justify-between">
+          <p class="text-[0.63rem] font-bold uppercase tracking-wider opacity-90 truncate">${escHtml(name)}</p>
+          <span class="text-[0.6rem] opacity-70">${g.count}</span>
+        </div>
+        <p class="text-sm font-extrabold mt-0.5 tracking-tight">${fmtBRL(g.sum)}</p>
+      </div>
+      ${targetSection}
+    `;
+                container.appendChild(card);
+            }
+        }
+
+        /* Tabela de Lançamentos (Sem coluna Status) */
+        function renderTable(totalOverride, baseOverride) {
+            const { total, baseEstrategica } = totalOverride !== undefined
+                ? { total: totalOverride, baseEstrategica: baseOverride }
+                : calcTotals();
+
+            const tbody = document.getElementById('tbl-body');
+            const empty = document.getElementById('tbl-empty');
+            const filter = document.getElementById('search-box').value.toLowerCase();
+
+            let sorted = getSorted();
+            if (filter) {
+                sorted = sorted.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(filter)));
+            }
+
+            tbody.querySelectorAll('tr.data-row').forEach(el => el.remove());
+            empty.style.display = sorted.length ? 'none' : '';
+            document.getElementById('tbl-count').textContent = records.length
+                ? `(${sorted.length} de ${records.length})`
+                : '';
+
+            for (const r of sorted) {
+                const pctCarteira = total !== 0 ? (r.valor / total) * 100 : 0;
+                const pctBase = baseEstrategica > 0 ? (r.valor / baseEstrategica) * 100 : 0;
+                const valCls = r.valor < 0 ? 'neg font-semibold' : 'pos font-semibold';
+
+                const tr = document.createElement('tr');
+                tr.className = `data-row ${editingId === r.id ? 'editing' : ''}`;
+                tr.innerHTML = `
+      <td class="font-semibold text-slate-200 whitespace-nowrap">${escHtml(r.super)}</td>
+      <td class="text-slate-400 whitespace-nowrap">${escHtml(r.sub)}</td>
+      <td class="text-slate-400 whitespace-nowrap">${escHtml(r.local)}</td>
+      <td class="text-slate-400 font-mono text-[0.68rem] whitespace-nowrap">${escHtml(r.cnpj)}</td>
+      <td class="font-medium text-slate-200">${escHtml(r.nome)}</td>
+      <td class="${valCls} text-right whitespace-nowrap">${fmtBRL(r.valor)}</td>
+      <td class="text-right text-slate-400 whitespace-nowrap">${fmtPct(pctCarteira)}</td>
+      <td class="text-right text-blue-300/80 whitespace-nowrap font-medium">${fmtPct(pctBase)}</td>
+      <td class="text-slate-400 whitespace-nowrap">${escHtml(r.data)}</td>
+      <td class="text-center whitespace-nowrap">
+        <button onclick="editRecord(${r.id})" title="Editar" class="text-blue-400 hover:text-blue-300 font-semibold mr-2">✏️</button>
+        <button onclick="deleteRecord(${r.id})" title="Excluir" class="text-red-400 hover:text-red-300 font-semibold">🗑</button>
+      </td>
+    `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           EXPORTAÇÃO DE RELATÓRIO COMPACTA
+        ═══════════════════════════════════════ */
+        function generateReport() {
+            const header = ['SuperPoderes', 'SubPoderes', 'Local', 'CNPJ', 'Nome', 'Valor', 'Alvo', 'Data'];
+            const rows = records.map(r => {
+                let alvoFormatado = '';
+                if (r.alvo !== null && r.alvo !== undefined && !isNaN(r.alvo)) {
+                    alvoFormatado = Number(r.alvo).toFixed(2);
+                }
+                return [
+                    r.super,
+                    r.sub,
+                    r.local,
+                    r.cnpj,
+                    r.nome,
+                    isNaN(r.valor) ? '' : r.valor.toFixed(2),
+                    alvoFormatado,
+                    r.data
+                ].map(csvEscape).join(';');
+            });
+
+            const csv = [header.join(';'), ...rows].join('\n');
+            const out = document.getElementById('csv-output');
+            out.value = csv;
+            document.getElementById('btn-copy').classList.remove('hidden');
+            showToast('✓ CSV gerado com sucesso!');
+        }
+
+        function copyReport() {
+            const out = document.getElementById('csv-output');
+            if (!out.value) generateReport();
+            const btn = document.getElementById('btn-copy');
+
+            navigator.clipboard.writeText(out.value).then(() => {
+                showToast('✓ Copiado para a área de transferência!');
+                btn.textContent = '✓ Copiado!';
+                setTimeout(() => {
+                    btn.textContent = 'Copiar';
+                }, 2000);
+            }).catch(() => {
+                out.select();
+                document.execCommand('copy');
+                showToast('✓ Copiado!');
+            });
+        }
+
+        let _toastT;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(_toastT);
+            _toastT = setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        /* ═══════════════════════════════════════
+           INICIALIZAÇÃO
+        ═══════════════════════════════════════ */
+        clearForm();
+        renderAll();
+    </script>
+</body>
+
+</html>
